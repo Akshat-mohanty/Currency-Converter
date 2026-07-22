@@ -192,7 +192,7 @@ const state = {
   converting: false,
 };
 
-const CACHE_TTL = 6 * 60 * 60 * 1000;
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour – matches exchangerate.fun update frequency
 
 // ---- DOM ----
 const amountEl    = document.getElementById('amount');
@@ -237,12 +237,12 @@ async function fetchUsdRates() {
   if (state.usdRates && state.rateTimestamp && Date.now() - state.rateTimestamp < CACHE_TTL) {
     return state.usdRates;
   }
-  const res  = await fetch('https://open.er-api.com/v6/latest/USD');
+  const res  = await fetch('https://api.exchangerate.fun/latest?base=USD');
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
-  if (data.result !== 'success') throw new Error('API error');
-  state.usdRates    = data.rates;
-  state.rateDate    = data.time_last_update_utc ? new Date(data.time_last_update_utc).toLocaleDateString() : '–';
+  if (!data.rates) throw new Error('API error');
+  state.usdRates      = data.rates;
+  state.rateDate      = data.timestamp ? new Date(data.timestamp * 1000).toLocaleString() : '–';
   state.rateTimestamp = Date.now();
   return state.usdRates;
 }
