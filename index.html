@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Currency Converter – Real-time exchange rates for 170+ currencies. Fast, free, and beautifully designed." />
+  <title>CurrencyX – Real-Time Currency Converter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Animated background orbs -->
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-orb orb-3"></div>
+
+  <!-- Particle canvas -->
+  <canvas id="particles"></canvas>
+
+  <main class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </div>
+        <span class="logo-text">CurrencyX</span>
+      </div>
+      <div class="header-badge">
+        <span class="pulse-dot"></span>
+        <span id="rateStatus">Live Rates</span>
+      </div>
+    </header>
+
+    <!-- Converter Card -->
+    <section class="converter-card" aria-label="Currency Converter">
+      <div class="card-glow"></div>
+
+      <h1 class="card-title">Convert Currencies</h1>
+      <p class="card-subtitle">Real-time rates from the European Central Bank</p>
+
+      <!-- Amount Input -->
+      <div class="input-group" id="amountGroup">
+        <label for="amount" class="input-label">Amount</label>
+        <div class="input-wrapper amount-wrapper">
+          <span class="currency-symbol" id="fromSymbol">$</span>
+          <input
+            type="number"
+            id="amount"
+            class="input-field"
+            value="1"
+            min="0"
+            step="any"
+            placeholder="Enter amount"
+            autocomplete="off"
+            aria-label="Amount to convert"
+          />
+        </div>
+      </div>
+
+      <!-- Currency Selectors Row -->
+      <div class="selectors-row">
+        <!-- From Currency -->
+        <div class="currency-select-group">
+          <label for="fromCurrency" class="input-label">From</label>
+          <div class="select-wrapper" id="fromSelectWrapper">
+            <div class="currency-flag" id="fromFlag">🇺🇸</div>
+            <select id="fromCurrency" class="currency-select" aria-label="Convert from currency"></select>
+            <div class="select-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Swap Button -->
+        <div class="swap-container">
+          <button id="swapBtn" class="swap-btn" aria-label="Swap currencies">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="17 1 21 5 17 9"/>
+              <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+              <polyline points="7 23 3 19 7 15"/>
+              <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- To Currency -->
+        <div class="currency-select-group">
+          <label for="toCurrency" class="input-label">To</label>
+          <div class="select-wrapper" id="toSelectWrapper">
+            <div class="currency-flag" id="toFlag">🇮🇳</div>
+            <select id="toCurrency" class="currency-select" aria-label="Convert to currency"></select>
+            <div class="select-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Convert Button -->
+      <button id="convertBtn" class="convert-btn" aria-label="Convert currency">
+        <span class="btn-text">Convert</span>
+        <div class="btn-spinner" id="btnSpinner" aria-hidden="true"></div>
+      </button>
+
+      <!-- Result Display -->
+      <div class="result-container" id="resultContainer" aria-live="polite">
+        <div class="result-inner">
+          <div class="result-from" id="resultFrom">1.00 USD</div>
+          <div class="result-equals">=</div>
+          <div class="result-to" id="resultTo">–</div>
+          <div class="result-rate" id="resultRate">Fetching rate...</div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- Quick Stats Row -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-card" id="statInverse">
+        <div class="stat-label">Inverse Rate</div>
+        <div class="stat-value" id="inverseValue">–</div>
+      </div>
+      <div class="stat-card" id="statMid">
+        <div class="stat-label">Mid Market</div>
+        <div class="stat-value" id="midValue">–</div>
+      </div>
+      <div class="stat-card" id="statUpdated">
+        <div class="stat-label">Last Updated</div>
+        <div class="stat-value" id="updatedValue">–</div>
+      </div>
+    </div>
+
+    <!-- Popular Pairs -->
+    <section class="popular-section" aria-label="Popular currency pairs">
+      <h2 class="section-title">Popular Pairs</h2>
+      <div class="pairs-grid" id="pairsGrid">
+        <!-- Injected by JS -->
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Rates provided by <a href="https://www.frankfurter.dev" target="_blank" rel="noopener noreferrer">Frankfurter (ECB)</a> · Updated daily</p>
+    </footer>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
