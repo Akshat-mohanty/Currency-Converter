@@ -62,6 +62,9 @@
     max-width: 480px;
     display: flex;
     flex-direction: column;
+  }
+  
+  .exchange-boxes-wrapper {
     position: relative;
   }
   
