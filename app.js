@@ -1,6 +1,6 @@
 'use strict';
 
-// ---- Flag emoji generator from ISO 3166-1 alpha-2 country code ----
+// ---- Flag emoji generator ----
 function flag(cc) {
   if (!cc || cc.length !== 2) return '🌐';
   return cc.toUpperCase().replace(/./g, c =>
@@ -8,7 +8,7 @@ function flag(cc) {
   );
 }
 
-// ---- All 160+ world currencies: [countryCode, name, symbol] ----
+// ---- All 160+ world currencies ----
 const CURRENCY_DATA = {
   AED: ['AE', 'UAE Dirham',                        'د.إ'],
   AFN: ['AF', 'Afghan Afghani',                    '؋'],
@@ -174,43 +174,49 @@ function getMeta(code) {
 
 // Popular pairs
 const POPULAR_PAIRS = [
+  { from:'USD', to:'EUR' },
+  { from:'USD', to:'GBP' },
   { from:'USD', to:'INR' },
-  { from:'EUR', to:'USD' },
-  { from:'GBP', to:'EUR' },
   { from:'USD', to:'JPY' },
-  { from:'USD', to:'AED' },
-  { from:'EUR', to:'GBP' },
+  { from:'EUR', to:'GBP' }
 ];
+
+// Strip currencies
+const STRIP_CURRENCIES = ['EUR', 'GBP', 'JPY', 'INR', 'AUD', 'CAD', 'CHF'];
 
 // ---- State ----
 const state = {
   from: 'USD',
   to:   'INR',
-  usdRates: null,       // all rates relative to USD
+  usdRates: null,
   rateDate: null,
   rateTimestamp: null,
   converting: false,
 };
 
-const CACHE_TTL = 60 * 60 * 1000; // 1 hour – matches exchangerate.fun update frequency
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour (exchangerate.fun)
 
-// ---- DOM ----
-const amountEl    = document.getElementById('amount');
-const swapBtn     = document.getElementById('swapBtn');
-const convertBtn  = document.getElementById('convertBtn');
-const resultFrom  = document.getElementById('resultFrom');
-const resultTo    = document.getElementById('resultTo');
-const resultRate  = document.getElementById('resultRate');
-const resultCont  = document.getElementById('resultContainer');
-const inverseVal  = document.getElementById('inverseValue');
-const midVal      = document.getElementById('midValue');
-const updatedVal  = document.getElementById('updatedValue');
-const statsRow    = document.getElementById('statsRow');
-const pairsGrid   = document.getElementById('pairsGrid');
-const fromSymbol  = document.getElementById('fromSymbol');
-const canvas      = document.getElementById('particles');
+// ---- DOM Elements ----
+const fromAmountEl = document.getElementById('fromAmount');
+const resultValueEl = document.getElementById('resultValue');
+const swapBtn = document.getElementById('swapBtn');
+const convertBtn = document.getElementById('convertBtn');
+const refreshBtn = document.getElementById('refreshBtn');
 
-// ---- Helpers ----
+const rateText = document.getElementById('rateText');
+const rateInverse = document.getElementById('rateInverse');
+const lastUpdated = document.getElementById('lastUpdated');
+
+const statRate = document.getElementById('statRate');
+const statInverse = document.getElementById('statInverse');
+const statUpdated = document.getElementById('statUpdated');
+
+const pairsList = document.getElementById('pairsList');
+const rateStrip = document.getElementById('rateStrip');
+const chartPair = document.getElementById('chartPair');
+const chartRate = document.getElementById('chartRate');
+
+// ---- Formatting Helpers ----
 function formatNum(n) {
   if (n >= 1000)  return n.toFixed(2);
   if (n >= 10)    return n.toFixed(3);
@@ -232,9 +238,9 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ---- API (open.er-api.com – no key needed, 160+ currencies) ----
-async function fetchUsdRates() {
-  if (state.usdRates && state.rateTimestamp && Date.now() - state.rateTimestamp < CACHE_TTL) {
+// ---- API (exchangerate.fun - hourly) ----
+async function fetchUsdRates(force = false) {
+  if (!force && state.usdRates && state.rateTimestamp && Date.now() - state.rateTimestamp < CACHE_TTL) {
     return state.usdRates;
   }
   const res  = await fetch('https://api.exchangerate.fun/latest?base=USD');
@@ -247,7 +253,6 @@ async function fetchUsdRates() {
   return state.usdRates;
 }
 
-// Cross-rate: from A to B via USD base
 function crossRate(rates, from, to) {
   if (from === to) return 1;
   const fromUsd = rates[from];
@@ -256,11 +261,14 @@ function crossRate(rates, from, to) {
   return toUsd / fromUsd;
 }
 
-// ---- Convert ----
+// ---- Convert Logic ----
 async function convert() {
   if (state.converting) return;
-  const amount = parseFloat(amountEl.value);
-  if (!amount || isNaN(amount) || amount <= 0) { showToast('Please enter a valid amount.'); return; }
+  const amount = parseFloat(fromAmountEl.value);
+  if (!amount || isNaN(amount) || amount <= 0) {
+    resultValueEl.textContent = '0.00';
+    return;
+  }
 
   state.converting = true;
   convertBtn.classList.add('loading');
@@ -271,34 +279,37 @@ async function convert() {
     const converted = amount * rate;
     const inverse   = 1 / rate;
 
-    resultFrom.textContent = `${formatAmount(amount)} ${state.from}`;
-    resultTo.classList.remove('animate', 'result-error');
-    void resultTo.offsetWidth;
-    resultTo.textContent = `${formatAmount(converted)} ${state.to}`;
-    resultTo.classList.add('animate');
-    resultRate.textContent = `1 ${state.from} = ${formatNum(rate)} ${state.to}`;
+    // Update main result
+    resultValueEl.textContent = formatAmount(converted);
 
-    resultCont.classList.add('has-result');
-    inverseVal.textContent = `${formatNum(inverse)} ${state.from}`;
-    midVal.textContent     = `${formatNum(rate)} ${state.to}`;
-    updatedVal.textContent = state.rateDate ?? '–';
-    statsRow.classList.add('visible');
+    // Update rate info texts
+    rateText.textContent = `1 ${state.from} = ${formatNum(rate)} ${state.to}`;
+    rateInverse.textContent = `1 ${state.to} = ${formatNum(inverse)} ${state.from}`;
 
-    fromSymbol.textContent = getMeta(state.from).symbol;
+    // Update stats cards
+    statRate.textContent = formatNum(rate);
+    statInverse.textContent = formatNum(inverse);
+    statUpdated.textContent = state.rateDate.split(',')[0];
+    lastUpdated.textContent = 'Updated ' + state.rateDate;
+
+    // Update chart section
+    chartPair.textContent = `${state.from} / ${state.to}`;
+    chartRate.textContent = formatNum(rate);
+
+    drawChart(rate); // Simulate chart
 
   } catch (err) {
     console.error(err);
-    resultTo.textContent = 'Error fetching rate';
-    resultTo.classList.add('result-error');
-    showToast('⚠️ Could not fetch rates. Check your connection.');
+    resultValueEl.textContent = 'Error';
+    showToast('⚠️ Could not fetch rates.');
   } finally {
     state.converting = false;
     convertBtn.classList.remove('loading');
   }
 }
 
-// ---- Custom Dropdown ----
-function buildDropdown(listEl, searchEl, triggerEl, side) {
+// ---- Custom Dropdown Logic ----
+function buildDropdown(listEl, searchEl, side) {
   const codes = Object.keys(CURRENCY_DATA).sort();
   listEl.innerHTML = '';
 
@@ -308,7 +319,6 @@ function buildDropdown(listEl, searchEl, triggerEl, side) {
     li.className = 'cs-item';
     li.dataset.code = code;
     li.setAttribute('role', 'option');
-    li.setAttribute('aria-label', `${code} ${meta.name}`);
     li.innerHTML = `
       <span class="cs-item-flag">${meta.flag}</span>
       <span class="cs-item-code">${code}</span>
@@ -322,12 +332,6 @@ function buildDropdown(listEl, searchEl, triggerEl, side) {
     listEl.appendChild(li);
   });
 
-  // No results message
-  const noRes = document.createElement('li');
-  noRes.className = 'cs-no-results';
-  noRes.textContent = 'No currencies found';
-  listEl.appendChild(noRes);
-
   // Search filter
   searchEl.addEventListener('input', () => {
     const q = searchEl.value.toLowerCase().trim();
@@ -339,39 +343,32 @@ function buildDropdown(listEl, searchEl, triggerEl, side) {
       item.classList.toggle('hidden', !show);
       if (show) visible++;
     });
-    noRes.style.display = visible === 0 ? 'block' : 'none';
+    document.getElementById(`${side}Empty`).style.display = visible === 0 ? 'block' : 'none';
   });
 }
 
 function selectCurrency(side, code) {
   const meta = getMeta(code);
-  state[side === 'from' ? 'from' : 'to'] = code;
+  state[side] = code;
 
   document.getElementById(`${side}Flag`).textContent = meta.flag;
   document.getElementById(`${side}Code`).textContent = code;
-  document.getElementById(`${side}Full`).textContent = meta.name;
+  document.getElementById(`${side}Name`).textContent = meta.name;
 
-  // Mark selected in list
+  // Mark selected
   const listEl = document.getElementById(`${side}List`);
   listEl.querySelectorAll('.cs-item').forEach(el => {
     el.classList.toggle('selected', el.dataset.code === code);
   });
-
-  // Scroll selected into view
-  const sel = listEl.querySelector('.cs-item.selected');
-  if (sel) sel.scrollIntoView({ block:'nearest' });
-
-  if (side === 'from') fromSymbol.textContent = meta.symbol;
 }
 
 const panelOpen = { from: false, to: false };
 
 function openDropdown(side) {
-  const panel  = document.getElementById(`${side}Panel`);
+  const panel = document.getElementById(`${side}Panel`);
   const trigger = document.getElementById(`${side}Trigger`);
   const search = document.getElementById(`${side}Search`);
-
-  // Close the other
+  
   const other = side === 'from' ? 'to' : 'from';
   if (panelOpen[other]) closeDropdown(other);
 
@@ -379,14 +376,13 @@ function openDropdown(side) {
   trigger.setAttribute('aria-expanded', 'true');
   panelOpen[side] = true;
   search.value = '';
-  // Reset filter
   document.getElementById(`${side}List`).querySelectorAll('.cs-item').forEach(el => el.classList.remove('hidden'));
-  document.querySelector(`#${side}Panel .cs-no-results`).style.display = 'none';
+  document.getElementById(`${side}Empty`).style.display = 'none';
   setTimeout(() => search.focus(), 50);
 }
 
 function closeDropdown(side) {
-  const panel  = document.getElementById(`${side}Panel`);
+  const panel = document.getElementById(`${side}Panel`);
   const trigger = document.getElementById(`${side}Trigger`);
   panel.classList.remove('open');
   trigger.setAttribute('aria-expanded', 'false');
@@ -397,81 +393,114 @@ function toggleDropdown(side) {
   panelOpen[side] ? closeDropdown(side) : openDropdown(side);
 }
 
-// ---- Popular Pairs ----
-async function renderPopularPairs() {
-  pairsGrid.innerHTML = POPULAR_PAIRS.map(() =>
-    `<div class="pair-card" style="height:72px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:16px;"></div>`
-  ).join('');
-
+// ---- Render Popular Pairs & Strip ----
+async function renderExtras() {
   try {
     const rates = await fetchUsdRates();
-    pairsGrid.innerHTML = '';
-
-    POPULAR_PAIRS.forEach(({ from, to }) => {
-      const rate     = crossRate(rates, from, to);
+    
+    // Popular Pairs
+    pairsList.innerHTML = '';
+    POPULAR_PAIRS.forEach(({from, to}) => {
+      const rate = crossRate(rates, from, to);
       const fromMeta = getMeta(from);
-      const toMeta   = getMeta(to);
-
-      const card = document.createElement('div');
-      card.className = 'pair-card';
-      card.setAttribute('role', 'button');
-      card.setAttribute('tabindex', '0');
-      card.innerHTML = `
-        <div>
-          <div class="pair-flags">${fromMeta.flag} → ${toMeta.flag}</div>
-          <div class="pair-name">${from} / ${to}</div>
-          <div class="pair-rate">1 ${from} = ${formatNum(rate)} ${to}</div>
+      const toMeta = getMeta(to);
+      const el = document.createElement('div');
+      el.className = 'pair-item';
+      el.innerHTML = `
+        <div class="pair-left">
+          <span class="pair-flags">${fromMeta.flag} ${toMeta.flag}</span>
+          <span class="pair-codes">${from} / ${to}</span>
         </div>
-        <div class="pair-change">Live</div>
+        <div class="pair-right">
+          <span class="pair-val">${formatNum(rate)}</span>
+        </div>
       `;
-      card.addEventListener('click', () => {
+      el.addEventListener('click', () => {
         selectCurrency('from', from);
         selectCurrency('to', to);
-        amountEl.value = '1';
         convert();
-        window.scrollTo({ top:0, behavior:'smooth' });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
-      card.addEventListener('keydown', e => { if (e.key==='Enter'||e.key===' ') card.click(); });
-      pairsGrid.appendChild(card);
+      pairsList.appendChild(el);
     });
-  } catch {
-    pairsGrid.innerHTML = '<p style="color:var(--text-muted);font-size:0.85rem;padding:12px;">Could not load popular pairs.</p>';
+
+    // Rate Strip
+    rateStrip.innerHTML = '';
+    STRIP_CURRENCIES.forEach(code => {
+      if (code === 'USD') return;
+      const rate = crossRate(rates, 'USD', code);
+      const meta = getMeta(code);
+      const el = document.createElement('div');
+      el.className = 'strip-item';
+      el.innerHTML = `
+        <span class="strip-flag">${meta.flag}</span>
+        <div class="strip-info">
+          <span class="strip-code">USD / ${code}</span>
+          <span class="strip-rate">${formatNum(rate)}</span>
+        </div>
+      `;
+      rateStrip.appendChild(el);
+    });
+  } catch (e) {
+    console.error(e);
   }
 }
 
-// ---- Particle Canvas ----
-function initParticles() {
+// ---- Simulated Chart ----
+function drawChart(currentRate) {
+  const canvas = document.getElementById('rateChart');
   const ctx = canvas.getContext('2d');
-  let W = window.innerWidth, H = window.innerHeight;
-  canvas.width = W; canvas.height = H;
-
-  const pts = Array.from({ length:60 }, () => ({
-    x: Math.random()*W, y: Math.random()*H,
-    r: Math.random()*1.5+0.5,
-    dx:(Math.random()-0.5)*0.3, dy:(Math.random()-0.5)*0.3,
-    o: Math.random()*0.5+0.1
-  }));
-
-  (function draw() {
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p => {
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle = `rgba(124,58,237,${p.o})`; ctx.fill();
-      p.x+=p.dx; p.y+=p.dy;
-      if(p.x<0||p.x>W) p.dx*=-1;
-      if(p.y<0||p.y>H) p.dy*=-1;
-    });
-    requestAnimationFrame(draw);
-  })();
-
-  window.addEventListener('resize', () => {
-    W = window.innerWidth; H = window.innerHeight;
-    canvas.width=W; canvas.height=H;
+  const W = canvas.width = canvas.offsetWidth;
+  const H = canvas.height = canvas.offsetHeight;
+  
+  ctx.clearRect(0,0,W,H);
+  
+  // Generate fake 7-day trend
+  const pts = [];
+  let r = currentRate * 0.98;
+  for(let i=0; i<7; i++) {
+    pts.push(r);
+    r = r + (Math.random() * 0.04 - 0.02) * currentRate;
+  }
+  pts.push(currentRate);
+  
+  const min = Math.min(...pts) * 0.99;
+  const max = Math.max(...pts) * 1.01;
+  
+  ctx.beginPath();
+  pts.forEach((val, i) => {
+    const x = (i / (pts.length - 1)) * W;
+    const y = H - ((val - min) / (max - min)) * H;
+    if(i === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
   });
+  
+  ctx.strokeStyle = '#ff5c5c'; // Coral accent
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+  
+  // Gradient fill
+  ctx.lineTo(W, H);
+  ctx.lineTo(0, H);
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0, 'rgba(255, 92, 92, 0.2)');
+  grad.addColorStop(1, 'rgba(255, 92, 92, 0)');
+  ctx.fillStyle = grad;
+  ctx.fill();
 }
 
-// ---- Events ----
+// ---- Event Listeners ----
 convertBtn.addEventListener('click', convert);
+
+refreshBtn.addEventListener('click', async () => {
+  refreshBtn.style.transform = 'rotate(180deg)';
+  setTimeout(() => refreshBtn.style.transform = 'none', 300);
+  await fetchUsdRates(true);
+  convert();
+  renderExtras();
+  showToast('Rates refreshed!');
+});
 
 swapBtn.addEventListener('click', () => {
   const tmp = state.from;
@@ -480,19 +509,16 @@ swapBtn.addEventListener('click', () => {
   convert();
 });
 
-amountEl.addEventListener('keydown', e => { if (e.key==='Enter') convert(); });
-
 let debounce;
-amountEl.addEventListener('input', () => {
+fromAmountEl.addEventListener('input', () => {
   clearTimeout(debounce);
-  debounce = setTimeout(convert, 500);
+  debounce = setTimeout(convert, 400);
 });
+fromAmountEl.addEventListener('keydown', e => { if(e.key === 'Enter') convert(); });
 
-// Trigger buttons
 document.getElementById('fromTrigger').addEventListener('click', () => toggleDropdown('from'));
 document.getElementById('toTrigger').addEventListener('click',   () => toggleDropdown('to'));
 
-// Close on outside click
 document.addEventListener('click', e => {
   ['from','to'].forEach(side => {
     if (!panelOpen[side]) return;
@@ -500,35 +526,28 @@ document.addEventListener('click', e => {
     if (!wrapper.contains(e.target)) closeDropdown(side);
   });
 });
-
-// Close on Escape
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeDropdown('from'); closeDropdown('to'); }
 });
 
+// Window resize for chart
+window.addEventListener('resize', () => {
+  if(!state.converting && state.usdRates) {
+    const rate = crossRate(state.usdRates, state.from, state.to);
+    drawChart(rate);
+  }
+});
+
 // ---- Init ----
 function init() {
-  // Build both dropdowns
-  buildDropdown(
-    document.getElementById('fromList'),
-    document.getElementById('fromSearch'),
-    document.getElementById('fromTrigger'),
-    'from'
-  );
-  buildDropdown(
-    document.getElementById('toList'),
-    document.getElementById('toSearch'),
-    document.getElementById('toTrigger'),
-    'to'
-  );
-
-  // Set defaults
+  buildDropdown(document.getElementById('fromList'), document.getElementById('fromSearch'), 'from');
+  buildDropdown(document.getElementById('toList'), document.getElementById('toSearch'), 'to');
+  
   selectCurrency('from', 'USD');
-  selectCurrency('to',   'INR');
-
-  initParticles();
+  selectCurrency('to', 'INR');
+  
   convert();
-  renderPopularPairs();
+  renderExtras();
 }
 
 init();
