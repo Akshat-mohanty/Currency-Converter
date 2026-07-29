@@ -8,6 +8,13 @@ function flag(cc) {
   );
 }
 
+function getAppleFlagUrl(cc) {
+  if (!cc || cc.length !== 2) return null;
+  const hex1 = (cc.toUpperCase().charCodeAt(0) + 127397).toString(16);
+  const hex2 = (cc.toUpperCase().charCodeAt(1) + 127397).toString(16);
+  return `https://unpkg.com/emoji-datasource-apple@15.0.1/img/apple/64/${hex1}-${hex2}.png`;
+}
+
 // ---- All 160+ world currencies ----
 const CURRENCY_DATA = {
   AED: ['AE', 'UAE Dirham',                        'د.إ'],
@@ -168,8 +175,13 @@ const CURRENCY_DATA = {
 
 function getMeta(code) {
   const d = CURRENCY_DATA[code];
-  if (!d) return { flag: '🌐', name: code, symbol: code };
-  return { flag: flag(d[0]), name: d[1], symbol: d[2] };
+  if (!d) return { flagUrl: null, flag: '🌐', name: code, symbol: code };
+  return { 
+    flagUrl: getAppleFlagUrl(d[0]),
+    flag: flag(d[0]), 
+    name: d[1], 
+    symbol: d[2] 
+  };
 }
 
 // ---- State ----
@@ -270,9 +282,13 @@ function buildDropdown(listEl, searchEl, side) {
     li.className = 'cs-item';
     li.dataset.code = code;
     li.setAttribute('role', 'option');
+    const flagHtml = meta.flagUrl 
+      ? `<img src="${meta.flagUrl}" alt="${meta.flag}" style="width:20px;height:20px;object-fit:contain;vertical-align:middle;border-radius:2px;box-shadow:0 0 2px rgba(0,0,0,0.1);">` 
+      : `<span class="cs-item-flag" style="font-size:1.2rem">${meta.flag}</span>`;
+    
     li.innerHTML = `
-      <span class="cs-item-flag" style="font-size:1.2rem">${meta.flag}</span>
-      <span class="cs-item-code" style="font-weight:600;min-width:40px">${code}</span>
+      ${flagHtml}
+      <span class="cs-item-code" style="font-weight:600;min-width:40px;margin-left:8px;">${code}</span>
       <span class="cs-item-name" style="font-size:0.8rem;color:#7a7a7a">${meta.name}</span>
     `;
     li.addEventListener('click', () => {
@@ -302,7 +318,13 @@ function selectCurrency(side, code) {
   const meta = getMeta(code);
   state[side] = code;
 
-  document.getElementById(`${side}Flag`).textContent = meta.flag;
+  const flagContainer = document.getElementById(`${side}Flag`);
+  if (meta.flagUrl) {
+    flagContainer.innerHTML = `<img src="${meta.flagUrl}" alt="${meta.flag}" style="width:24px;height:24px;object-fit:contain;vertical-align:middle;border-radius:3px;box-shadow:0 0 2px rgba(0,0,0,0.1);">`;
+  } else {
+    flagContainer.textContent = meta.flag;
+  }
+  
   document.getElementById(`${side}Code`).textContent = code;
 
   // Mark selected
