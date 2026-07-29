@@ -1,5 +1,5 @@
 # 💱 CurrencyX – Currency Converter
-https://6a60d8c63f641100086617cf--currencyxapp.netlify.app
+[Try it here!] (https://6a60d8c63f641100086617cf--currencyxapp.netlify.app)
 
 A simple, client-side currency converter built with plain HTML, CSS, and JavaScript. No frameworks, no build steps, no API key needed.
 
