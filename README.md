@@ -1,7 +1,7 @@
 # 💱 CurrencyX – Currency Converter
 Give it a try!
 
-Try the [CurrencyX Live Demo](https://6a69c2bdcf7aa70008f21b10--currencyxapp.netlify.app) now!
+Try the [Santerra Currency Converter](https://6a69c2bdcf7aa70008f21b10--currencyxapp.netlify.app) now!
 
 A simple, client-side currency converter built with plain HTML, CSS, and JavaScript. No frameworks, no build steps, no API key needed.
 
