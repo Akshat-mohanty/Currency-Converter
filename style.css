@@ -250,7 +250,7 @@
   }
   
   .line-right {
-    flex: 0 0 110px; /* Aligns the button with the gap between amount and currency */
+    flex: 1;
   }
   
   .swap-btn {
