@@ -1,7 +1,7 @@
 # 💱 CurrencyX – Currency Converter
 Give it a try!
 
-<a href="https://6a60d8c63f641100086617cf--currencyxapp.netlify.app">CurrencyX Live Demo</a>
+<a href="[https://6a60d8c63f641100086617cf--currencyxapp.netlify.app](https://6a69c2bdcf7aa70008f21b10--currencyxapp.netlify.app)">CurrencyX Live Demo</a>
 
 A simple, client-side currency converter built with plain HTML, CSS, and JavaScript. No frameworks, no build steps, no API key needed.
 
