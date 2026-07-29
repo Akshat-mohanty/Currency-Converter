@@ -321,3 +321,12 @@
     font-size: 0.75rem;
     color: var(--text-muted);
   }
+  
+  /* Copyright Footer */
+  .copyright-footer {
+    margin-top: 48px;
+    text-align: center;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
