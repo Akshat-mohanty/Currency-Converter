@@ -109,6 +109,14 @@
     font-weight: 500;
     width: 100%;
     max-width: 200px;
+    -moz-appearance: textfield; /* Hide spinner in Firefox */
+  }
+
+  /* Hide spinner in Chrome/Safari/Edge */
+  .amount-input::-webkit-outer-spin-button,
+  .amount-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
   
   .amount-input::placeholder {
@@ -233,9 +241,16 @@
   }
   
   .swap-line {
-    flex: 1;
     height: 2px;
     background-color: var(--bg-white);
+  }
+  
+  .line-left {
+    flex: 1;
+  }
+  
+  .line-right {
+    flex: 0 0 110px; /* Aligns the button with the gap between amount and currency */
   }
   
   .swap-btn {
