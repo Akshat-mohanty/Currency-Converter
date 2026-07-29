@@ -1,5 +1,5 @@
 # 💱 CurrencyX – Currency Converter
-Give it a try!
+Give it a try! /n
 <a href="https://6a60d8c63f641100086617cf--currencyxapp.netlify.app">CurrencyX Live Demo</a>
 
 A simple, client-side currency converter built with plain HTML, CSS, and JavaScript. No frameworks, no build steps, no API key needed.
