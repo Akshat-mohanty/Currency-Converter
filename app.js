@@ -192,7 +192,7 @@ const state = {
   converting: false,
 };
 
-const CACHE_TTL = 60 * 60 * 1000; // 1 hour (exchangerate.fun)
+const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours (open.er-api.com)
 
 // ---- DOM Elements ----
 const fromAmountEl = document.getElementById('fromAmount');
@@ -213,12 +213,12 @@ function formatAmount(n) {
   return new Intl.NumberFormat('en-US', { minimumFractionDigits:2, maximumFractionDigits:2 }).format(n);
 }
 
-// ---- API (exchangerate.fun - hourly) ----
+// ---- API (open.er-api.com - daily) ----
 async function fetchUsdRates() {
   if (state.usdRates && state.rateTimestamp && Date.now() - state.rateTimestamp < CACHE_TTL) {
     return state.usdRates;
   }
-  const res  = await fetch('https://api.exchangerate.fun/latest?base=USD');
+  const res  = await fetch('https://open.er-api.com/v6/latest/USD');
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
   if (!data.rates) throw new Error('API error');
