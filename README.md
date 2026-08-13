@@ -1,4 +1,4 @@
-# 💱 CurrencyX – Currency Converter
+# 💱 Santerra Currency Converter
 Give it a try!
 
 Try the [Santerra Currency Converter](https://6a69c2bdcf7aa70008f21b10--currencyxapp.netlify.app) now!
