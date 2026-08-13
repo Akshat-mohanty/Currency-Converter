@@ -9,7 +9,7 @@ A simple, client-side currency converter built with plain HTML, CSS, and JavaScr
 
 ## Features -
 
--  36+ currencies with country flags
+-  160+ currencies with country flags
 -  Live exchange rates from the [Frankfurter API](https://www.frankfurter.dev/) (European Central Bank data)
 -  Converts as you type
 -  Swap button to flip currencies instantly
