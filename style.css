@@ -114,6 +114,7 @@ body {
   line-height: 1.15;
   color: var(--text-main);
   margin-bottom: 16px;
+  text-wrap: balance;
   animation: heroFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
 }
 
