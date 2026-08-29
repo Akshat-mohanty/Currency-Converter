@@ -41,9 +41,13 @@ Santerra provides four financial calculation tools in a single unified workspace
 
 ## Aesthetic & Design
 
-- **Warm Cream Palette**: Crafted with rich linen, cream, and sand tones (`#FBF8F3`, `#F3EFE6`, `#ECE6DA`).
-- **Electric Emerald Accent**: Highlights key financial gains and interactive slider thumbs.
-- **Physics-Based Animations**: Staggered page load entrances, smooth scroll transitions, and reactive number pulse animations.
+- **Warm Editorial Palette**: Crafted with rich linen ivory (`#FAF9F5`), soft oat surfaces (`#F2EFE9`), and deep obsidian black (`#121312`).
+- **Deep Forest Emerald Accent**: Signature `#1B4332` accent paired with soft sage tints (`#E8F0EC`) and borders (`#D1E3D9`).
+- **Editorial Serif Typography**: Pairing [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) with [Outfit](https://fonts.google.com/specimen/Outfit) for high-contrast luxury presentation.
+- **Split-Screen Authentication**: Dedicated luxury auth experience with Google OAuth (Google Identity Services) and email/password accounts.
+- **Dedicated Legal Pages**: Standardized Privacy Policy (`privacy.html`) and Terms of Service (`terms.html`) pages.
+- **Interactive Financial Previews**: Live preview cards showcasing Currency, Loan, Installments, and Investment compounding.
+- **Physics-Based Animations**: Staggered page load entrances, directional tab slide transitions, and tactile spring button animations.
 - **Fully Responsive**: Optimized for seamless use across mobile phones, tablets, and wide desktop displays.
 
 ---
@@ -64,22 +68,19 @@ open index.html
 
 ---
 
-## API
+## API & Authentication
 
-Currency exchange rates are fetched from [open.er-api.com](https://open.er-api.com/) — no sign-up or API key required. Rates are cached locally for 24 hours to ensure high performance and zero unnecessary network requests.
-
-```
-GET https://open.er-api.com/v6/latest/USD
-```
+- **Exchange Rates**: Sourced from [open.er-api.com](https://open.er-api.com/) — no sign-up or API key required. Rates are cached locally for 24 hours.
+- **Authentication**: Official Google Identity Services SDK (`https://accounts.google.com/gsi/client`) client-side OAuth with JWT decoding and local session persistence.
 
 ---
 
 ## Tech Stack
 
-- **HTML5**: Semantic markup with segmented navigation menus and accessible form controls.
-- **CSS3**: CSS custom properties, modern animations, range slider styling, and responsive media queries.
+- **HTML5**: Semantic markup with fixed glassmorphic navigation, split-screen authentication, and accessible form controls.
+- **CSS3**: Modern CSS custom properties, backdrop filters, smooth range slider styling, and responsive grid layouts.
 - **Vanilla JavaScript (ES6+)**: Pure client-side calculations (amortization formulas, compound growth math, live API fetching, clipboard API).
-- **Typography**: [Outfit](https://fonts.google.com/specimen/Outfit) via Google Fonts.
+- **Typography**: [Playfair Display](https://fonts.google.com/specimen/Playfair+Display) & [Outfit](https://fonts.google.com/specimen/Outfit) via Google Fonts.
 
 ---
 
