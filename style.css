@@ -1775,25 +1775,13 @@ body {
   background: rgba(0, 0, 0, 0.05);
 }
 
-.auth-modal-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 20px;
-  background: var(--accent-soft);
-  color: var(--accent);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 20px;
-  border: 1px solid var(--accent-border);
-}
-
 .auth-modal-title {
   font-family: var(--font-serif);
   font-size: 1.85rem;
   font-weight: 700;
   color: var(--text-main);
   letter-spacing: -0.5px;
+  margin-top: 8px;
   margin-bottom: 10px;
 }
 
