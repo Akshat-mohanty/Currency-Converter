@@ -1400,7 +1400,7 @@ body {
 
 .auth-form-container {
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
 }
 
 .auth-mobile-header {
@@ -1472,13 +1472,20 @@ body {
 }
 
 .auth-google-section {
+  width: 100%;
   margin-bottom: 20px;
 }
 
 .google-btn-wrapper {
   width: 100%;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.google-btn-wrapper > div,
+.google-btn-wrapper iframe {
+  width: 100% !important;
 }
 
 .google-custom-btn {

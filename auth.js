@@ -187,7 +187,7 @@ function initGoogleSignIn() {
           shape: 'pill',
           text: currentMode === 'signup' ? 'signup_with' : 'continue_with',
           logo_alignment: 'left',
-          width: 360
+          width: Math.min(googleBtnWrapper.offsetWidth || 400, 400)
         });
 
         // Strictly hide the fallback button so only ONE Google button is displayed
