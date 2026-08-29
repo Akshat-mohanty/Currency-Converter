@@ -1753,12 +1753,11 @@ body {
   width: 100%;
   max-width: 580px;
   margin: 0 auto;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: 28px;
-  padding: 56px 36px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 36px 20px;
   text-align: center;
-  box-shadow: 0 4px 24px rgba(18, 19, 18, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
