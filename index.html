@@ -459,6 +459,40 @@
     </div>
   </footer>
 
+  <!-- Auth Required Prompt Modal (Locked Tools) -->
+  <div class="auth-modal-backdrop" id="authPromptModal" aria-hidden="true" role="dialog" aria-labelledby="authPromptTitle">
+    <div class="auth-modal-card">
+      <button type="button" class="auth-modal-close" id="closeAuthModalBtn" aria-label="Close modal">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="auth-modal-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+
+      <h3 class="auth-modal-title" id="authPromptTitle">Unlock this tool</h3>
+      <p class="auth-modal-desc" id="authPromptDesc">
+        Please sign up or log in to access the <strong id="lockedToolName">Loan Calculator</strong> and the complete financial suite.
+      </p>
+
+      <div class="auth-modal-actions">
+        <a href="auth.html" class="auth-modal-primary-btn" id="modalAuthLink">
+          <span>Log in / Sign up</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+        <button type="button" class="auth-modal-secondary-btn" id="stayCurrencyBtn">
+          Continue with Currency Converter
+        </button>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>

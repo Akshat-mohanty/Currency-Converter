@@ -499,9 +499,71 @@ function switchTool(tabName, animate = true) {
   });
 }
 
+// ==========================================
+// Locked Tools & Auth Prompt Modal
+// ==========================================
+const authPromptModal = document.getElementById('authPromptModal');
+const closeAuthModalBtn = document.getElementById('closeAuthModalBtn');
+const stayCurrencyBtn = document.getElementById('stayCurrencyBtn');
+const lockedToolName = document.getElementById('lockedToolName');
+
+const toolDisplayNames = {
+  loan: 'Loan Calculator',
+  emi: 'Installments Calculator',
+  investment: 'Investment Calculator'
+};
+
+function openAuthPromptModal(toolKey) {
+  if (lockedToolName && toolDisplayNames[toolKey]) {
+    lockedToolName.textContent = toolDisplayNames[toolKey];
+  }
+  if (authPromptModal) {
+    authPromptModal.classList.add('open');
+    authPromptModal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeAuthPromptModal() {
+  if (authPromptModal) {
+    authPromptModal.classList.remove('open');
+    authPromptModal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+}
+
+if (closeAuthModalBtn) {
+  closeAuthModalBtn.addEventListener('click', closeAuthPromptModal);
+}
+
+if (stayCurrencyBtn) {
+  stayCurrencyBtn.addEventListener('click', closeAuthPromptModal);
+}
+
+if (authPromptModal) {
+  authPromptModal.addEventListener('click', (e) => {
+    if (e.target === authPromptModal) {
+      closeAuthPromptModal();
+    }
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && authPromptModal && authPromptModal.classList.contains('open')) {
+    closeAuthPromptModal();
+  }
+});
+
 navTabs.forEach(tab => {
   tab.addEventListener('click', () => {
     const tabName = tab.getAttribute('data-tab');
+    if (tabName !== 'currency') {
+      const user = getSessionUser();
+      if (!user) {
+        openAuthPromptModal(tabName);
+        return;
+      }
+    }
     switchTool(tabName, true);
   });
 });
