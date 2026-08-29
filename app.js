@@ -419,6 +419,7 @@ function init() {
   buildDropdown(document.getElementById('fromList'), document.getElementById('fromSearch'), 'from');
   buildDropdown(document.getElementById('toList'), document.getElementById('toSearch'), 'to');
   
+  if (fromAmountEl) fromAmountEl.value = '1.00';
   selectCurrency('from', 'USD');
   selectCurrency('to', 'EUR');
   
