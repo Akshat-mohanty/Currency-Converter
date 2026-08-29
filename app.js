@@ -462,34 +462,9 @@ if (scrollCtaBtn) {
   });
 }
 
-// ==========================================
-// Theme Engine (Dark Luxe & Warm Editorial)
-// ==========================================
-const themeToggleBtn = document.getElementById('themeToggleBtn');
-function setTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('santerra_theme', theme);
-}
-
-function initTheme() {
-  const saved = localStorage.getItem('santerra_theme');
-  if (saved) {
-    setTheme(saved);
-  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    setTheme('dark');
-  } else {
-    setTheme('light');
-  }
-}
-
-if (themeToggleBtn) {
-  themeToggleBtn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme') || 'light';
-    const next = current === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-  });
-}
-initTheme();
+// Enforce pure light theme
+try { localStorage.removeItem('santerra_theme'); } catch(e) {}
+document.documentElement.removeAttribute('data-theme');
 
 // ==========================================
 // Segmented Navigation & Tool Panels

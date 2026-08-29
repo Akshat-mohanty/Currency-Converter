@@ -2,10 +2,10 @@
    Santerra – All-in-One Financial Suite
    ============================================= */
 
-:root, [data-theme="light"] {
-  --bg-main: #F4F3EF;
-  --bg-box-top: #EFECE5;
-  --bg-box-bottom: #E8E5DC;
+:root {
+  --bg-main: #FBF8F3;       /* Warm luxurious cream */
+  --bg-box-top: #F3EFE6;    /* Soft warm cream-sand */
+  --bg-box-bottom: #ECE6DA; /* Rich warm sand */
   --bg-white: #FFFFFF;
   --text-main: #111111;
   --text-muted: #7A7A7A;
@@ -15,34 +15,14 @@
   --accent-glow: rgba(16, 185, 129, 0.18);
   --border-card: rgba(0, 0, 0, 0.05);
   --border-subtle: rgba(0, 0, 0, 0.06);
-  --card-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.02);
+  --card-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.05), 0 2px 8px rgba(0, 0, 0, 0.02);
   --slider-track: rgba(0, 0, 0, 0.08);
   --chip-bg: #FFFFFF;
   --chip-border: rgba(0, 0, 0, 0.06);
-  --bg-gradient: radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.75) 0%, rgba(244, 243, 239, 0) 65%);
+  --bg-gradient: radial-gradient(circle at 50% -10%, rgba(255, 255, 255, 0.85) 0%, rgba(251, 248, 243, 0) 65%);
   --font: 'Outfit', sans-serif;
   --radius-lg: 24px;
   --radius-pill: 9999px;
-}
-
-[data-theme="dark"] {
-  --bg-main: #0C0D11;
-  --bg-box-top: #15171E;
-  --bg-box-bottom: #1B1E27;
-  --bg-white: #171920;
-  --text-main: #F3F4F6;
-  --text-muted: #9499A6;
-  --btn-black: #F3F4F6;
-  --btn-text: #0C0D11;
-  --accent: #10B981;
-  --accent-glow: rgba(16, 185, 129, 0.3);
-  --border-card: rgba(255, 255, 255, 0.08);
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --card-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6), 0 2px 8px rgba(0, 0, 0, 0.4);
-  --slider-track: rgba(255, 255, 255, 0.12);
-  --chip-bg: #1B1E27;
-  --chip-border: rgba(255, 255, 255, 0.08);
-  --bg-gradient: radial-gradient(circle at 50% -10%, rgba(26, 30, 42, 0.7) 0%, rgba(12, 13, 17, 0) 65%);
 }
 
 html {
@@ -65,7 +45,6 @@ body {
   min-height: 100vh;
   padding: 24px;
   -webkit-font-smoothing: antialiased;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Entrance Animations */
@@ -95,7 +74,7 @@ body {
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   width: 100%;
   margin-bottom: 24px;
   animation: headerFadeIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -109,7 +88,6 @@ body {
 
 .logo-icon {
   color: var(--text-main);
-  transition: color 0.3s ease;
 }
 
 .brand-title {
@@ -117,37 +95,7 @@ body {
   font-weight: 700;
   letter-spacing: -0.5px;
   color: var(--text-main);
-  transition: color 0.3s ease;
 }
-
-.theme-toggle-btn {
-  background: var(--bg-white);
-  border: 1px solid var(--border-subtle);
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: var(--text-main);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-  transition: transform 0.2s ease, background-color 0.3s ease, color 0.3s ease, box-shadow 0.2s ease;
-}
-
-.theme-toggle-btn:hover {
-  transform: scale(1.06);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-}
-
-.theme-toggle-btn:active {
-  transform: scale(0.95);
-}
-
-[data-theme="light"] .moon-icon { display: none; }
-[data-theme="light"] .sun-icon { display: block; }
-[data-theme="dark"] .sun-icon { display: none; }
-[data-theme="dark"] .moon-icon { display: block; }
 
 /* Main Content */
 .main-content {
@@ -230,11 +178,7 @@ body {
 
 .nav-tab:hover {
   color: var(--text-main);
-  background: rgba(0, 0, 0, 0.03);
-}
-
-[data-theme="dark"] .nav-tab:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .nav-tab.active {
