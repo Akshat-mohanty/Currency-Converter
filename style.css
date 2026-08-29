@@ -1294,6 +1294,7 @@ body {
 }
 
 .footer-top {
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1323,8 +1324,10 @@ body {
 .footer-nav-links {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 22px;
   flex-wrap: wrap;
+  margin-left: auto;
 }
 
 .footer-link {
