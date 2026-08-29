@@ -62,10 +62,10 @@ if (switchModeBtn) {
   });
 }
 
-// Auto-detect mode from URL query parameter (e.g. auth.html?mode=signup)
+// Auto-detect mode from URL query parameter (e.g. auth.html?mode=signup) or signup.html
 try {
   const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('mode') === 'signup') {
+  if (urlParams.get('mode') === 'signup' || window.location.pathname.includes('signup')) {
     setMode('signup');
   }
 } catch (e) {}

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Sign in or create an account for Santerra Financial Suite" />
-  <title>Santerra — Sign In / Sign Up</title>
+  <meta name="description" content="Create an account for Santerra Financial Suite" />
+  <title>Santerra — Create Account</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
@@ -43,12 +43,12 @@
 
         <!-- Auth Header -->
         <div class="auth-form-header">
-          <h1 class="auth-heading" id="authTitle">Welcome back</h1>
+          <h1 class="auth-heading" id="authTitle">Create your account</h1>
           <p class="auth-subheading-row">
             <span id="authSubtitle">Login to save your progress</span>
             <span>&middot;</span>
-            <span id="switchPrompt">Don't have an account?</span>
-            <a href="#" class="auth-accent-link" id="switchModeBtn">Sign up &rarr;</a>
+            <span id="switchPrompt">Already have an account?</span>
+            <a href="auth.html" class="auth-accent-link" id="switchModeBtn">Sign in &rarr;</a>
           </p>
         </div>
 
@@ -68,7 +68,7 @@
               <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
               <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
             </svg>
-            <span id="googleBtnLabel">Continue with Google</span>
+            <span id="googleBtnLabel">Sign up with Google</span>
           </button>
         </div>
 
@@ -80,11 +80,11 @@
 
         <!-- Email & Password Form -->
         <form class="auth-form-fields" id="authForm" novalidate>
-          <!-- Full Name (Only for Sign Up) -->
-          <div class="auth-form-group" id="nameGroup" style="display: none;">
+          <!-- Full Name -->
+          <div class="auth-form-group" id="nameGroup">
             <label for="fullNameInput" class="auth-form-label">Full Name</label>
             <div class="auth-input-wrapper">
-              <input type="text" id="fullNameInput" class="auth-input-field" placeholder="Akshat Mohanty" autocomplete="name" />
+              <input type="text" id="fullNameInput" class="auth-input-field" placeholder="Akshat Mohanty" required autocomplete="name" />
             </div>
           </div>
 
@@ -100,7 +100,7 @@
           <div class="auth-form-group">
             <label for="passwordInput" class="auth-form-label">Password</label>
             <div class="auth-input-wrapper password-input-wrapper">
-              <input type="password" id="passwordInput" class="auth-input-field" placeholder="••••••••" required autocomplete="current-password" />
+              <input type="password" id="passwordInput" class="auth-input-field" placeholder="••••••••" required autocomplete="new-password" />
               <button type="button" class="auth-toggle-pass-btn" id="togglePassBtn" aria-label="Show or hide password">
                 <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                 <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
@@ -119,7 +119,7 @@
 
           <!-- Submit Button -->
           <button type="submit" class="auth-primary-submit" id="authSubmitBtn">
-            <span id="submitBtnText">Sign in</span>
+            <span id="submitBtnText">Create account</span>
           </button>
         </form>
 
@@ -130,6 +130,7 @@
 
         <!-- Copyright Line -->
         <p class="auth-copyright-bottom">© 2026 Akshat Mohanty. Built with ❤️</p>
+
       </div>
     </div>
 
