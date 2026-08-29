@@ -865,7 +865,6 @@ function updateHeaderAuth() {
   } else {
     headerAuth.innerHTML = `
       <a href="auth.html" class="header-login-btn" id="headerSignInBtn">Log in</a>
-      <a href="auth.html?mode=signup" class="header-signup-btn">Get started</a>
     `;
   }
 }
