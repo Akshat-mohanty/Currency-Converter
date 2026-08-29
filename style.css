@@ -324,9 +324,9 @@
   
   /* Copyright Footer */
   .copyright-footer {
-    margin-top: 48px;
+    margin-top: 32px;
     text-align: center;
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.8rem;
+    font-weight: 400;
     color: var(--text-muted);
   }
