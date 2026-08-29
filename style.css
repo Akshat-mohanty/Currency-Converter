@@ -38,6 +38,29 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Entrance Animations */
+@keyframes headerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* Header */
 .app-header {
   display: flex;
@@ -46,6 +69,7 @@ body {
   width: 100%;
   max-width: 1080px;
   margin: 0 auto 32px auto;
+  animation: headerFadeIn 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .logo {
@@ -121,6 +145,7 @@ body {
   font-weight: 500;
   color: var(--text-muted);
   margin-bottom: 24px;
+  animation: heroFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
 }
 
 .badge-dot {
@@ -145,6 +170,7 @@ body {
   line-height: 1.15;
   color: var(--text-main);
   margin-bottom: 16px;
+  animation: heroFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
 }
 
 .landing-hero .hero-subtitle {
@@ -154,10 +180,12 @@ body {
   line-height: 1.5;
   max-width: 520px;
   margin-bottom: 34px;
+  animation: heroFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
 }
 
 .hero-actions {
   margin-bottom: 48px;
+  animation: heroFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.32s both;
 }
 
 .hero-cta-btn {
@@ -198,6 +226,7 @@ body {
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
+  animation: heroFadeIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
 }
 
 .stat-pill {
@@ -212,6 +241,12 @@ body {
   font-size: 0.8rem;
   font-weight: 500;
   color: var(--text-main);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-pill:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .stat-icon {
@@ -227,6 +262,15 @@ body {
   flex-direction: column;
   align-items: center;
   scroll-margin-top: 40px;
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.converter-section.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .section-label {
@@ -271,7 +315,11 @@ body {
   padding: 28px 24px;
   display: flex;
   flex-direction: column;
-  transition: background-color 0.2s ease;
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.exchange-box:focus-within {
+  box-shadow: inset 0 0 0 1.5px rgba(17, 17, 17, 0.1);
 }
 
 .box-top {
@@ -325,6 +373,26 @@ body {
   max-width: 210px;
   line-height: 1.15;
   -moz-appearance: textfield;
+}
+
+.result-value {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  will-change: transform, opacity;
+}
+
+@keyframes valuePulse {
+  0% {
+    opacity: 0.65;
+    transform: scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.result-value.pulse {
+  animation: valuePulse 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Hide spinner in Chrome/Safari/Edge */
@@ -467,11 +535,12 @@ body {
   gap: 10px;
   padding: 10px 16px;
   cursor: pointer;
-  transition: background-color 0.12s ease;
+  transition: background-color 0.15s ease, transform 0.15s ease;
 }
 
 .cs-item:hover {
   background-color: #f5f5f5;
+  transform: translateX(4px);
 }
 .cs-item.hidden { display: none; }
 .cs-empty { padding: 16px; text-align: center; color: var(--text-muted); display: none; font-size: 0.88rem;}
@@ -517,24 +586,16 @@ body {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   margin: 0 14px;
   color: var(--text-main);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
 
 .swap-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transform: scale(1.08);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .swap-btn:active {
-  transform: scale(0.95);
-}
-
-.swap-btn.spin {
-  transform: rotate(180deg);
-}
-
-.swap-btn.spin:hover {
-  transform: rotate(180deg) scale(1.1);
+  transform: scale(0.92);
 }
 
 /* Action Button (Copy Conversion) */
@@ -673,5 +734,21 @@ body {
   }
   .cs-code {
     font-size: 0.95rem;
+  }
+}
+
+/* Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .converter-section {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

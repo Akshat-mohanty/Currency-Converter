@@ -253,8 +253,11 @@ async function convert() {
     const converted = amount * rate;
     const inverse   = 1 / rate;
 
-    // Update main result
+    // Update main result with smooth pulse animation
     resultValueEl.textContent = formatAmount(converted);
+    resultValueEl.classList.remove('pulse');
+    void resultValueEl.offsetWidth;
+    resultValueEl.classList.add('pulse');
 
     // Update rate info texts if present
     if (rateInfoText) {
@@ -416,10 +419,10 @@ if (copyBtn) {
   });
 }
 
-let swapRotated = false;
+let swapRotation = 0;
 swapBtn.addEventListener('click', () => {
-  swapRotated = !swapRotated;
-  swapBtn.classList.toggle('spin', swapRotated);
+  swapRotation += 180;
+  swapBtn.style.transform = `rotate(${swapRotation}deg)`;
   const tmp = state.from;
   selectCurrency('from', state.to);
   selectCurrency('to',   tmp);
@@ -453,8 +456,29 @@ if (scrollCtaBtn) {
   scrollCtaBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const target = document.getElementById('converter');
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+      target.classList.add('revealed');
+    }
   });
+}
+
+// Scroll reveal observer for converter section
+const converterSection = document.getElementById('converter');
+if (converterSection) {
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          converterSection.classList.add('revealed');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    observer.observe(converterSection);
+  } else {
+    converterSection.classList.add('revealed');
+  }
 }
 
 // ---- Init ----
