@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Santerra - Currency Converter" />
-  <title>Santerra - Currency Converter</title>
+  <meta name="description" content="Santerra - All-in-One Financial Suite: Currency Converter, Loan Calculator, EMI Calculator, Investment Growth" />
+  <title>Santerra - All-in-One Financial Suite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -12,45 +12,70 @@
 </head>
 <body>
 
-  <!-- App Header with Logo at Top Left -->
+  <!-- App Header with Logo at Top Left and Theme Toggle at Top Right -->
   <header class="app-header">
     <div class="logo">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <rect x="2" y="2" width="6" height="6" rx="2" fill="#111111"/>
-        <rect x="10" y="2" width="6" height="6" rx="2" fill="#111111"/>
-        <rect x="2" y="10" width="6" height="6" rx="2" fill="#111111"/>
+      <svg class="logo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="2" y="2" width="6" height="6" rx="2" fill="currentColor"/>
+        <rect x="10" y="2" width="6" height="6" rx="2" fill="currentColor"/>
+        <rect x="2" y="10" width="6" height="6" rx="2" fill="currentColor"/>
       </svg>
       <span class="brand-title">Santerra</span>
+    </div>
+
+    <div class="header-actions">
+      <button class="theme-toggle-btn" id="themeToggleBtn" type="button" aria-label="Toggle dark/light theme mode">
+        <svg class="theme-icon sun-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <svg class="theme-icon moon-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </button>
     </div>
   </header>
 
   <main class="main-content">
     
-    <!-- Hero Landing Section (Above the Fold) -->
+    <!-- Hero Landing Section (All-in-One Description) -->
     <section class="landing-hero">
-      <h1 class="hero-title">Currency conversion made effortless.</h1>
-      <p class="hero-subtitle">Accurate mid-market calculations across 160+ world currencies.</p>
+      <h1 class="hero-title">Your all-in-one financial toolkit.</h1>
+      <p class="hero-subtitle">Instant currency conversion, loan breakdowns, EMI schedules, and investment compounding — all in one clean workspace.</p>
 
-      <div class="hero-actions">
-        <a href="#converter" class="hero-cta-btn" id="scrollCtaBtn">
-          <span>Start Converting</span>
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <polyline points="19 12 12 19 5 12"></polyline>
-          </svg>
-        </a>
-      </div>
+      <!-- Segmented Navigation Menu -->
+      <nav class="tools-nav" aria-label="Financial tools navigation">
+        <button class="nav-tab active" data-tab="currency" type="button">
+          <span class="tab-icon">💱</span>
+          <span class="tab-label">Currency</span>
+        </button>
+        <button class="nav-tab" data-tab="loan" type="button">
+          <span class="tab-icon">🏦</span>
+          <span class="tab-label">Loan</span>
+        </button>
+        <button class="nav-tab" data-tab="emi" type="button">
+          <span class="tab-icon">💳</span>
+          <span class="tab-label">EMI / Installment</span>
+        </button>
+        <button class="nav-tab" data-tab="investment" type="button">
+          <span class="tab-icon">📈</span>
+          <span class="tab-label">Investment</span>
+        </button>
+      </nav>
     </section>
 
-    <!-- Converter Section (Revealed on Scroll) -->
-    <section class="converter-section" id="converter">
-      <div class="section-label">
-        <span class="label-line"></span>
-        <span class="label-text">Live Converter</span>
-        <span class="label-line"></span>
-      </div>
+    <!-- Unified Workspace Container -->
+    <section class="workspace-section" id="workspace">
 
-      <div class="converter-wrapper">
+      <!-- TOOL 1: CURRENCY CONVERTER -->
+      <div class="tool-panel active" id="currencyPanel">
         <!-- Exchange Boxes Container -->
         <div class="exchange-boxes-wrapper">
           <!-- Top Section: From Currency -->
@@ -139,6 +164,242 @@
           <span class="btn-label" id="copyBtnLabel">Copy Conversion</span>
         </button>
       </div>
+
+      <!-- TOOL 2: LOAN CALCULATOR -->
+      <div class="tool-panel" id="loanPanel">
+        <div class="calculator-card">
+          <div class="calc-inputs">
+            <!-- Loan Amount -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="loanAmountSlider" class="field-label">Loan Amount</label>
+                <div class="field-value-badge">$<span id="loanAmountBadge">25,000</span></div>
+              </div>
+              <input type="range" class="calc-slider" id="loanAmountSlider" min="1000" max="250000" step="500" value="25000" />
+            </div>
+
+            <!-- Interest Rate -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="loanRateSlider" class="field-label">Annual Interest Rate</label>
+                <div class="field-value-badge"><span id="loanRateBadge">6.5</span>%</div>
+              </div>
+              <input type="range" class="calc-slider" id="loanRateSlider" min="1" max="25" step="0.1" value="6.5" />
+            </div>
+
+            <!-- Loan Term -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="loanTermSlider" class="field-label">Loan Term (Years)</label>
+                <div class="field-value-badge"><span id="loanTermBadge">5</span> Years</div>
+              </div>
+              <input type="range" class="calc-slider" id="loanTermSlider" min="1" max="30" step="1" value="5" />
+            </div>
+          </div>
+
+          <!-- Summary Metric Cards -->
+          <div class="calc-summary">
+            <div class="summary-hero">
+              <span class="summary-label">Monthly Payment</span>
+              <div class="summary-hero-value">$<span id="loanMonthlyOutput">489.15</span></div>
+            </div>
+
+            <div class="summary-metrics-row">
+              <div class="metric-box">
+                <span class="metric-label">Total Principal</span>
+                <span class="metric-value">$<span id="loanPrincipalOutput">25,000.00</span></span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Total Interest</span>
+                <span class="metric-value text-accent">$<span id="loanInterestOutput">4,349.07</span></span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Total Payable</span>
+                <span class="metric-value">$<span id="loanTotalOutput">29,349.07</span></span>
+              </div>
+            </div>
+
+            <!-- Visual Breakdown Bar -->
+            <div class="breakdown-container">
+              <div class="breakdown-bar">
+                <div class="bar-fill principal-fill" id="loanPrincipalBar" style="width: 85%;"></div>
+                <div class="bar-fill interest-fill" id="loanInterestBar" style="width: 15%;"></div>
+              </div>
+              <div class="breakdown-legend">
+                <div class="legend-item"><span class="legend-dot dot-principal"></span> Principal (<span id="loanPrincipalPct">85%</span>)</div>
+                <div class="legend-item"><span class="legend-dot dot-interest"></span> Interest (<span id="loanInterestPct">15%</span>)</div>
+              </div>
+            </div>
+
+            <button class="action-btn copy-btn" id="copyLoanBtn" type="button" aria-label="Copy loan calculation summary">
+              <svg class="btn-icon default-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <svg class="btn-icon success-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="btn-label" id="copyLoanLabel">Copy Loan Summary</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOL 3: EMI / INSTALLMENT CALCULATOR -->
+      <div class="tool-panel" id="emiPanel">
+        <div class="calculator-card">
+          <div class="calc-inputs">
+            <!-- Purchase Price -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="emiTotalSlider" class="field-label">Total Purchase Price</label>
+                <div class="field-value-badge">$<span id="emiTotalBadge">15,000</span></div>
+              </div>
+              <input type="range" class="calc-slider" id="emiTotalSlider" min="500" max="150000" step="500" value="15000" />
+            </div>
+
+            <!-- Down Payment -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="emiDownSlider" class="field-label">Down Payment</label>
+                <div class="field-value-badge">$<span id="emiDownBadge">3,000</span></div>
+              </div>
+              <input type="range" class="calc-slider" id="emiDownSlider" min="0" max="75000" step="250" value="3000" />
+            </div>
+
+            <!-- Interest Rate -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="emiRateSlider" class="field-label">Interest Rate (% p.a.)</label>
+                <div class="field-value-badge"><span id="emiRateBadge">8.0</span>%</div>
+              </div>
+              <input type="range" class="calc-slider" id="emiRateSlider" min="0" max="30" step="0.25" value="8.0" />
+            </div>
+
+            <!-- Tenure Preset Pills -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="emiTenureSlider" class="field-label">Tenure (Months)</label>
+                <div class="field-value-badge"><span id="emiTenureBadge">24</span> Months</div>
+              </div>
+              <div class="chips-row">
+                <button type="button" class="tenure-chip" data-tenure="6">6M</button>
+                <button type="button" class="tenure-chip" data-tenure="12">12M</button>
+                <button type="button" class="tenure-chip active" data-tenure="24">24M</button>
+                <button type="button" class="tenure-chip" data-tenure="36">36M</button>
+                <button type="button" class="tenure-chip" data-tenure="48">48M</button>
+                <button type="button" class="tenure-chip" data-tenure="60">60M</button>
+              </div>
+              <input type="range" class="calc-slider" id="emiTenureSlider" min="3" max="84" step="1" value="24" />
+            </div>
+          </div>
+
+          <!-- Summary Metric Cards -->
+          <div class="calc-summary">
+            <div class="summary-hero">
+              <span class="summary-label">Monthly EMI Installment</span>
+              <div class="summary-hero-value text-accent">$<span id="emiMonthlyOutput">542.74</span></div>
+            </div>
+
+            <div class="summary-metrics-row">
+              <div class="metric-box">
+                <span class="metric-label">Financed Loan</span>
+                <span class="metric-value">$<span id="emiFinancedOutput">12,000.00</span></span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Total Interest</span>
+                <span class="metric-value">$<span id="emiInterestOutput">1,025.75</span></span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Total Outlay</span>
+                <span class="metric-value">$<span id="emiTotalPayableOutput">16,025.75</span></span>
+              </div>
+            </div>
+
+            <button class="action-btn copy-btn" id="copyEmiBtn" type="button" aria-label="Copy EMI calculation summary">
+              <svg class="btn-icon default-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <svg class="btn-icon success-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="btn-label" id="copyEmiLabel">Copy EMI Details</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOOL 4: INVESTMENT / COMPOUND GROWTH CALCULATOR -->
+      <div class="tool-panel" id="investmentPanel">
+        <div class="calculator-card">
+          <div class="calc-inputs">
+            <!-- Initial Deposit -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="invInitialSlider" class="field-label">Initial Deposit</label>
+                <div class="field-value-badge">$<span id="invInitialBadge">5,000</span></div>
+              </div>
+              <input type="range" class="calc-slider" id="invInitialSlider" min="0" max="100000" step="500" value="5000" />
+            </div>
+
+            <!-- Monthly Contribution -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="invMonthlySlider" class="field-label">Monthly Contribution (SIP)</label>
+                <div class="field-value-badge">$<span id="invMonthlyBadge">500</span>/mo</div>
+              </div>
+              <input type="range" class="calc-slider" id="invMonthlySlider" min="0" max="10000" step="50" value="500" />
+            </div>
+
+            <!-- Expected Annual Return -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="invRateSlider" class="field-label">Expected Annual Return</label>
+                <div class="field-value-badge"><span id="invRateBadge">10.0</span>%</div>
+              </div>
+              <input type="range" class="calc-slider" id="invRateSlider" min="1" max="30" step="0.5" value="10.0" />
+            </div>
+
+            <!-- Investment Horizon -->
+            <div class="calc-field">
+              <div class="field-header">
+                <label for="invYearsSlider" class="field-label">Investment Duration</label>
+                <div class="field-value-badge"><span id="invYearsBadge">10</span> Years</div>
+              </div>
+              <input type="range" class="calc-slider" id="invYearsSlider" min="1" max="40" step="1" value="10" />
+            </div>
+          </div>
+
+          <!-- Summary Metric Cards -->
+          <div class="calc-summary">
+            <div class="summary-hero">
+              <span class="summary-label">Projected Future Wealth</span>
+              <div class="summary-hero-value text-accent">$<span id="invFutureWealthOutput">115,487.39</span></div>
+            </div>
+
+            <div class="summary-metrics-row">
+              <div class="metric-box">
+                <span class="metric-label">Total Invested</span>
+                <span class="metric-value">$<span id="invTotalInvestedOutput">65,000.00</span></span>
+              </div>
+              <div class="metric-box">
+                <span class="metric-label">Wealth Growth</span>
+                <span class="metric-value text-accent">+$<span id="invTotalGainsOutput">50,487.39</span></span>
+              </div>
+            </div>
+
+            <!-- Visual Wealth Growth Bar -->
+            <div class="breakdown-container">
+              <div class="breakdown-bar">
+                <div class="bar-fill principal-fill" id="invInvestedBar" style="width: 56%;"></div>
+                <div class="bar-fill interest-fill" id="invGainBar" style="width: 44%;"></div>
+              </div>
+              <div class="breakdown-legend">
+                <div class="legend-item"><span class="legend-dot dot-principal"></span> Invested (<span id="invInvestedPct">56%</span>)</div>
+                <div class="legend-item"><span class="legend-dot dot-interest"></span> Growth (<span id="invGainPct">44%</span>)</div>
+              </div>
+            </div>
+
+            <button class="action-btn copy-btn" id="copyInvBtn" type="button" aria-label="Copy investment calculation plan">
+              <svg class="btn-icon default-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <svg class="btn-icon success-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span class="btn-label" id="copyInvLabel">Copy Investment Plan</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
     </section>
 
   </main>

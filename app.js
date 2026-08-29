@@ -455,31 +455,342 @@ const scrollCtaBtn = document.getElementById('scrollCtaBtn');
 if (scrollCtaBtn) {
   scrollCtaBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const target = document.getElementById('converter');
+    const target = document.getElementById('workspace');
     if (target) {
       target.scrollIntoView({ behavior: 'smooth' });
-      target.classList.add('revealed');
     }
   });
 }
 
-// Scroll reveal observer for converter section
-const converterSection = document.getElementById('converter');
-if (converterSection) {
-  if ('IntersectionObserver' in window) {
-    const observer = new IntersectionObserver((entries, obs) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          converterSection.classList.add('revealed');
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    observer.observe(converterSection);
+// ==========================================
+// Theme Engine (Dark Luxe & Warm Editorial)
+// ==========================================
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('santerra_theme', theme);
+}
+
+function initTheme() {
+  const saved = localStorage.getItem('santerra_theme');
+  if (saved) {
+    setTheme(saved);
+  } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    setTheme('dark');
   } else {
-    converterSection.classList.add('revealed');
+    setTheme('light');
   }
 }
+
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme') || 'light';
+    const next = current === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+  });
+}
+initTheme();
+
+// ==========================================
+// Segmented Navigation & Tool Panels
+// ==========================================
+const navTabs = document.querySelectorAll('.nav-tab');
+const toolPanels = document.querySelectorAll('.tool-panel');
+
+function switchTool(tabName) {
+  navTabs.forEach(tab => {
+    tab.classList.toggle('active', tab.getAttribute('data-tab') === tabName);
+  });
+  toolPanels.forEach(panel => {
+    const isTarget = panel.id === `${tabName}Panel`;
+    panel.classList.toggle('active', isTarget);
+  });
+}
+
+navTabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    const tabName = tab.getAttribute('data-tab');
+    switchTool(tabName);
+    if (history.replaceState) {
+      history.replaceState(null, '', `#${tabName}`);
+    }
+  });
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+  const hash = window.location.hash.replace('#', '');
+  if (['currency', 'loan', 'emi', 'investment'].includes(hash)) {
+    switchTool(hash);
+  }
+});
+
+// ==========================================
+// Helper Formatters & Copy Setup
+// ==========================================
+function formatCurrency(n) {
+  return new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+}
+
+function setupCopyAction(btnId, labelId, textGetter, defaultLabel) {
+  const btn = document.getElementById(btnId);
+  const label = document.getElementById(labelId);
+  let timeout;
+  if (!btn) return;
+
+  btn.addEventListener('click', async () => {
+    const textToCopy = textGetter();
+    const onSuccess = () => {
+      btn.classList.add('copied');
+      if (label) label.textContent = 'Copied to Clipboard!';
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        btn.classList.remove('copied');
+        if (label) label.textContent = defaultLabel;
+      }, 2000);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        onSuccess();
+        return;
+      } catch (err) {
+        console.warn('Clipboard API failed', err);
+      }
+    }
+
+    const temp = document.createElement('textarea');
+    temp.value = textToCopy;
+    temp.style.position = 'fixed';
+    temp.style.opacity = '0';
+    document.body.appendChild(temp);
+    temp.select();
+    try {
+      document.execCommand('copy');
+      onSuccess();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      document.body.removeChild(temp);
+    }
+  });
+}
+
+// ==========================================
+// TOOL 2: Loan Calculator
+// ==========================================
+const loanAmountSlider = document.getElementById('loanAmountSlider');
+const loanRateSlider = document.getElementById('loanRateSlider');
+const loanTermSlider = document.getElementById('loanTermSlider');
+
+const loanAmountBadge = document.getElementById('loanAmountBadge');
+const loanRateBadge = document.getElementById('loanRateBadge');
+const loanTermBadge = document.getElementById('loanTermBadge');
+
+const loanMonthlyOutput = document.getElementById('loanMonthlyOutput');
+const loanPrincipalOutput = document.getElementById('loanPrincipalOutput');
+const loanInterestOutput = document.getElementById('loanInterestOutput');
+const loanTotalOutput = document.getElementById('loanTotalOutput');
+
+const loanPrincipalBar = document.getElementById('loanPrincipalBar');
+const loanInterestBar = document.getElementById('loanInterestBar');
+const loanPrincipalPct = document.getElementById('loanPrincipalPct');
+const loanInterestPct = document.getElementById('loanInterestPct');
+
+function calculateLoan() {
+  if (!loanAmountSlider) return;
+  const P = parseFloat(loanAmountSlider.value);
+  const annualRate = parseFloat(loanRateSlider.value);
+  const years = parseInt(loanTermSlider.value, 10);
+
+  if (loanAmountBadge) loanAmountBadge.textContent = P.toLocaleString('en-US');
+  if (loanRateBadge) loanRateBadge.textContent = annualRate.toFixed(1);
+  if (loanTermBadge) loanTermBadge.textContent = years;
+
+  const r = (annualRate / 100) / 12;
+  const n = years * 12;
+
+  let monthly = 0;
+  if (r === 0) {
+    monthly = P / n;
+  } else {
+    monthly = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  }
+
+  const totalPayment = monthly * n;
+  const totalInterest = totalPayment - P;
+
+  if (loanMonthlyOutput) loanMonthlyOutput.textContent = formatCurrency(monthly);
+  if (loanPrincipalOutput) loanPrincipalOutput.textContent = formatCurrency(P);
+  if (loanInterestOutput) loanInterestOutput.textContent = formatCurrency(totalInterest);
+  if (loanTotalOutput) loanTotalOutput.textContent = formatCurrency(totalPayment);
+
+  const pPct = Math.round((P / totalPayment) * 100) || 50;
+  const iPct = 100 - pPct;
+
+  if (loanPrincipalBar) loanPrincipalBar.style.width = `${pPct}%`;
+  if (loanInterestBar) loanInterestBar.style.width = `${iPct}%`;
+  if (loanPrincipalPct) loanPrincipalPct.textContent = `${pPct}%`;
+  if (loanInterestPct) loanInterestPct.textContent = `${iPct}%`;
+}
+
+if (loanAmountSlider) {
+  [loanAmountSlider, loanRateSlider, loanTermSlider].forEach(slider => {
+    slider.addEventListener('input', calculateLoan);
+  });
+}
+
+setupCopyAction('copyLoanBtn', 'copyLoanLabel', () => {
+  return `Loan Summary: Principal $${loanPrincipalOutput.textContent}, Monthly Payment $${loanMonthlyOutput.textContent}, Total Interest $${loanInterestOutput.textContent}, Total Payable $${loanTotalOutput.textContent}`;
+}, 'Copy Loan Summary');
+
+// ==========================================
+// TOOL 3: EMI / Installment Calculator
+// ==========================================
+const emiTotalSlider = document.getElementById('emiTotalSlider');
+const emiDownSlider = document.getElementById('emiDownSlider');
+const emiRateSlider = document.getElementById('emiRateSlider');
+const emiTenureSlider = document.getElementById('emiTenureSlider');
+
+const emiTotalBadge = document.getElementById('emiTotalBadge');
+const emiDownBadge = document.getElementById('emiDownBadge');
+const emiRateBadge = document.getElementById('emiRateBadge');
+const emiTenureBadge = document.getElementById('emiTenureBadge');
+
+const emiMonthlyOutput = document.getElementById('emiMonthlyOutput');
+const emiFinancedOutput = document.getElementById('emiFinancedOutput');
+const emiInterestOutput = document.getElementById('emiInterestOutput');
+const emiTotalPayableOutput = document.getElementById('emiTotalPayableOutput');
+const tenureChips = document.querySelectorAll('.tenure-chip');
+
+function calculateEmi() {
+  if (!emiTotalSlider) return;
+  const total = parseFloat(emiTotalSlider.value);
+  let down = parseFloat(emiDownSlider.value);
+  if (down > total) {
+    down = total;
+    emiDownSlider.value = down;
+  }
+  emiDownSlider.max = total;
+
+  const annualRate = parseFloat(emiRateSlider.value);
+  const months = parseInt(emiTenureSlider.value, 10);
+
+  if (emiTotalBadge) emiTotalBadge.textContent = total.toLocaleString('en-US');
+  if (emiDownBadge) emiDownBadge.textContent = down.toLocaleString('en-US');
+  if (emiRateBadge) emiRateBadge.textContent = annualRate.toFixed(1);
+  if (emiTenureBadge) emiTenureBadge.textContent = months;
+
+  const P = Math.max(0, total - down);
+  const r = (annualRate / 100) / 12;
+  const n = months;
+
+  let emi = 0;
+  if (P === 0) {
+    emi = 0;
+  } else if (r === 0) {
+    emi = P / n;
+  } else {
+    emi = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+  }
+
+  const totalRepayment = (emi * n) + down;
+  const totalInterest = Math.max(0, (emi * n) - P);
+
+  if (emiMonthlyOutput) emiMonthlyOutput.textContent = formatCurrency(emi);
+  if (emiFinancedOutput) emiFinancedOutput.textContent = formatCurrency(P);
+  if (emiInterestOutput) emiInterestOutput.textContent = formatCurrency(totalInterest);
+  if (emiTotalPayableOutput) emiTotalPayableOutput.textContent = formatCurrency(totalRepayment);
+
+  tenureChips.forEach(chip => {
+    const tVal = parseInt(chip.getAttribute('data-tenure'), 10);
+    chip.classList.toggle('active', tVal === months);
+  });
+}
+
+if (emiTotalSlider) {
+  [emiTotalSlider, emiDownSlider, emiRateSlider, emiTenureSlider].forEach(el => {
+    el.addEventListener('input', calculateEmi);
+  });
+
+  tenureChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const val = parseInt(chip.getAttribute('data-tenure'), 10);
+      emiTenureSlider.value = val;
+      calculateEmi();
+    });
+  });
+}
+
+setupCopyAction('copyEmiBtn', 'copyEmiLabel', () => {
+  return `EMI Installment: Monthly $${emiMonthlyOutput.textContent}, Financed Loan $${emiFinancedOutput.textContent}, Total Interest $${emiInterestOutput.textContent}, Total Outlay $${emiTotalPayableOutput.textContent}`;
+}, 'Copy EMI Details');
+
+// ==========================================
+// TOOL 4: Investment / Compound Growth
+// ==========================================
+const invInitialSlider = document.getElementById('invInitialSlider');
+const invMonthlySlider = document.getElementById('invMonthlySlider');
+const invRateSlider = document.getElementById('invRateSlider');
+const invYearsSlider = document.getElementById('invYearsSlider');
+
+const invInitialBadge = document.getElementById('invInitialBadge');
+const invMonthlyBadge = document.getElementById('invMonthlyBadge');
+const invRateBadge = document.getElementById('invRateBadge');
+const invYearsBadge = document.getElementById('invYearsBadge');
+
+const invFutureWealthOutput = document.getElementById('invFutureWealthOutput');
+const invTotalInvestedOutput = document.getElementById('invTotalInvestedOutput');
+const invTotalGainsOutput = document.getElementById('invTotalGainsOutput');
+
+const invInvestedBar = document.getElementById('invInvestedBar');
+const invGainBar = document.getElementById('invGainBar');
+const invInvestedPct = document.getElementById('invInvestedPct');
+const invGainPct = document.getElementById('invGainPct');
+
+function calculateInvestment() {
+  if (!invInitialSlider) return;
+  const initial = parseFloat(invInitialSlider.value);
+  const monthly = parseFloat(invMonthlySlider.value);
+  const annualReturn = parseFloat(invRateSlider.value);
+  const years = parseInt(invYearsSlider.value, 10);
+
+  if (invInitialBadge) invInitialBadge.textContent = initial.toLocaleString('en-US');
+  if (invMonthlyBadge) invMonthlyBadge.textContent = monthly.toLocaleString('en-US');
+  if (invRateBadge) invRateBadge.textContent = annualReturn.toFixed(1);
+  if (invYearsBadge) invYearsBadge.textContent = years;
+
+  const r = (annualReturn / 100) / 12;
+  const n = years * 12;
+
+  const fvInitial = initial * Math.pow(1 + r, n);
+  const fvMonthly = r === 0 ? monthly * n : monthly * ((Math.pow(1 + r, n) - 1) / r);
+  const totalWealth = fvInitial + fvMonthly;
+  const totalInvested = initial + (monthly * n);
+  const totalGain = Math.max(0, totalWealth - totalInvested);
+
+  if (invFutureWealthOutput) invFutureWealthOutput.textContent = formatCurrency(totalWealth);
+  if (invTotalInvestedOutput) invTotalInvestedOutput.textContent = formatCurrency(totalInvested);
+  if (invTotalGainsOutput) invTotalGainsOutput.textContent = formatCurrency(totalGain);
+
+  const invPct = Math.round((totalInvested / totalWealth) * 100) || 50;
+  const gainPct = 100 - invPct;
+
+  if (invInvestedBar) invInvestedBar.style.width = `${invPct}%`;
+  if (invGainBar) invGainBar.style.width = `${gainPct}%`;
+  if (invInvestedPct) invInvestedPct.textContent = `${invPct}%`;
+  if (invGainPct) invGainPct.textContent = `${gainPct}%`;
+}
+
+if (invInitialSlider) {
+  [invInitialSlider, invMonthlySlider, invRateSlider, invYearsSlider].forEach(slider => {
+    slider.addEventListener('input', calculateInvestment);
+  });
+}
+
+setupCopyAction('copyInvBtn', 'copyInvLabel', () => {
+  return `Investment Plan: Future Wealth $${invFutureWealthOutput.textContent}, Total Invested $${invTotalInvestedOutput.textContent}, Wealth Growth +$${invTotalGainsOutput.textContent}`;
+}, 'Copy Investment Plan');
 
 // ---- Init ----
 function init() {
@@ -491,6 +802,9 @@ function init() {
   selectCurrency('to', 'EUR');
   
   convert();
+  calculateLoan();
+  calculateEmi();
+  calculateInvestment();
 }
 
 init();
