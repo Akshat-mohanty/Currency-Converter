@@ -1747,104 +1747,54 @@ body {
 }
 
 /* =============================================
-   Auth Required Prompt Modal (Locked Tools)
+   Tool Locked Card (Inline Gated State)
    ============================================= */
-.auth-modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 9999;
-  background: rgba(18, 19, 18, 0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.25s ease, visibility 0.25s ease;
-}
-
-.auth-modal-backdrop.open {
-  opacity: 1;
-  visibility: visible;
-}
-
-.auth-modal-card {
-  position: relative;
+.tool-locked-card {
   width: 100%;
-  max-width: 440px;
+  max-width: 580px;
+  margin: 0 auto;
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
   border-radius: 28px;
-  padding: 36px 32px 32px 32px;
+  padding: 56px 36px;
   text-align: center;
-  box-shadow: 0 24px 60px rgba(18, 19, 18, 0.22);
-  transform: scale(0.94) translateY(12px);
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 24px rgba(18, 19, 18, 0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
+  animation: toolFadeIn 0.35s ease forwards;
 }
 
-.auth-modal-backdrop.open .auth-modal-card {
-  transform: scale(1) translateY(0);
-}
-
-.auth-modal-close {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background: transparent;
-  border: none;
-  color: var(--text-muted);
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: color 0.15s ease, background-color 0.15s ease;
-}
-
-.auth-modal-close:hover {
-  color: var(--text-main);
-  background: rgba(0, 0, 0, 0.05);
-}
-
-.auth-modal-title {
+.locked-card-title {
   font-family: var(--font-serif);
-  font-size: 1.85rem;
+  font-size: 2.2rem;
   font-weight: 700;
   color: var(--text-main);
-  letter-spacing: -0.5px;
-  margin-top: 8px;
-  margin-bottom: 10px;
+  letter-spacing: -0.6px;
+  margin-bottom: 12px;
 }
 
-.auth-modal-desc {
-  font-size: 0.95rem;
+.locked-card-desc {
+  font-size: 0.98rem;
   color: var(--text-muted);
-  line-height: 1.55;
-  margin-bottom: 28px;
-  max-width: 360px;
+  line-height: 1.6;
+  max-width: 440px;
+  margin-bottom: 30px;
 }
 
-.auth-modal-desc strong {
+.locked-card-desc strong {
   color: var(--text-main);
 }
 
-.auth-modal-actions {
+.locked-card-actions {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
+  max-width: 320px;
 }
 
-.auth-modal-primary-btn {
+.locked-primary-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1854,7 +1804,7 @@ body {
   font-family: var(--font);
   font-size: 0.95rem;
   font-weight: 600;
-  padding: 13px 24px;
+  padding: 13px 28px;
   border-radius: var(--radius-pill);
   text-decoration: none;
   box-shadow: 0 4px 16px rgba(27, 67, 50, 0.22);
@@ -1862,13 +1812,13 @@ body {
   width: 100%;
 }
 
-.auth-modal-primary-btn:hover {
+.locked-primary-btn:hover {
   background: var(--accent-hover);
   box-shadow: 0 8px 24px rgba(27, 67, 50, 0.3);
   transform: translateY(-1px);
 }
 
-.auth-modal-secondary-btn {
+.locked-secondary-btn {
   background: transparent;
   border: 1px solid var(--border-subtle);
   color: var(--text-muted);
@@ -1882,10 +1832,27 @@ body {
   width: 100%;
 }
 
-.auth-modal-secondary-btn:hover {
+.locked-secondary-btn:hover {
   color: var(--text-main);
   background: var(--bg-white);
   border-color: #d1cbc1;
+}
+
+/* Visibility based on auth state */
+body.is-logged-out .tool-locked-card {
+  display: flex;
+}
+
+body.is-logged-out .tool-panel:not(#currencyPanel) .calculator-card {
+  display: none !important;
+}
+
+body.is-logged-in .tool-locked-card {
+  display: none !important;
+}
+
+body.is-logged-in .tool-panel .calculator-card {
+  display: grid !important;
 }
 
 /* =============================================
