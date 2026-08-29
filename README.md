@@ -25,11 +25,11 @@ Santerra provides four financial calculation tools in a single unified workspace
 - **Visual Breakdown Bar**: Shows proportional distribution between Principal and Interest.
 - **One-Click Summary Copy** for sharing loan breakdowns.
 
-### 3. 💳 Installment / EMI Calculator
+### 3. 💳 Installments Calculator
 - **Purchase Price & Down Payment** calculation with real-time deduction.
 - **Quick Tenure Presets**: Select common installment terms (6M, 12M, 24M, 36M, 48M, 60M) or use the fine-tune slider.
-- **Financial Metrics**: Monthly EMI installment, net financed loan, total interest outlay, and full repayment cost.
-- **One-Click EMI Copy** for pasting into estimates or budgets.
+- **Financial Metrics**: Monthly installment, net financed loan, total interest outlay, and full repayment cost.
+- **One-Click Installment Copy** for pasting into estimates or budgets.
 
 ### 4. 📈 Investment & Wealth Growth Calculator
 - **Compound Growth Engine**: Simulates wealth growth combining an initial deposit with recurring monthly contributions (SIP).

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Santerra - All-in-One Financial Suite: Currency Converter, Loan Calculator, EMI Calculator, Investment Growth" />
+  <meta name="description" content="Santerra - All-in-One Financial Suite: Currency Converter, Loan Calculator, Installments Calculator, Investment Growth" />
   <title>Santerra - All-in-One Financial Suite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,7 +29,7 @@
     <!-- Hero Landing Section (All-in-One Description) -->
     <section class="landing-hero">
       <h1 class="hero-title">Your all-in-one financial toolkit.</h1>
-      <p class="hero-subtitle">Instant currency conversion, loan breakdowns, EMI schedules, and investment compounding — all in one clean workspace.</p>
+      <p class="hero-subtitle">Instant currency conversion, loan breakdowns, installment schedules, and investment compounding — all in one clean workspace.</p>
 
       <!-- Segmented Navigation Menu -->
       <nav class="tools-nav" aria-label="Financial tools navigation">
@@ -40,7 +40,7 @@
           <span class="tab-label">Loan</span>
         </button>
         <button class="nav-tab" data-tab="emi" type="button">
-          <span class="tab-label">EMI / Installment</span>
+          <span class="tab-label">Installments</span>
         </button>
         <button class="nav-tab" data-tab="investment" type="button">
           <span class="tab-label">Investment</span>
@@ -217,7 +217,7 @@
         </div>
       </div>
 
-      <!-- TOOL 3: EMI / INSTALLMENT CALCULATOR -->
+      <!-- TOOL 3: INSTALLMENTS CALCULATOR -->
       <div class="tool-panel" id="emiPanel">
         <div class="calculator-card">
           <div class="calc-inputs">
@@ -269,7 +269,7 @@
           <!-- Summary Metric Cards -->
           <div class="calc-summary">
             <div class="summary-hero">
-              <span class="summary-label">Monthly EMI Installment</span>
+              <span class="summary-label">Monthly Installment</span>
               <div class="summary-hero-value text-accent">$<span id="emiMonthlyOutput">542.74</span></div>
             </div>
 
@@ -288,10 +288,10 @@
               </div>
             </div>
 
-            <button class="action-btn copy-btn" id="copyEmiBtn" type="button" aria-label="Copy EMI calculation summary">
+            <button class="action-btn copy-btn" id="copyEmiBtn" type="button" aria-label="Copy installment calculation summary">
               <svg class="btn-icon default-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
               <svg class="btn-icon success-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-              <span class="btn-label" id="copyEmiLabel">Copy EMI Details</span>
+              <span class="btn-label" id="copyEmiLabel">Copy Installment Details</span>
             </button>
           </div>
         </div>

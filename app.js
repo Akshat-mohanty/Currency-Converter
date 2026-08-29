@@ -503,18 +503,25 @@ navTabs.forEach(tab => {
   tab.addEventListener('click', () => {
     const tabName = tab.getAttribute('data-tab');
     switchTool(tabName, true);
-    if (history.replaceState) {
-      history.replaceState(null, '', `#${tabName}`);
-    }
   });
 });
 
-window.addEventListener('DOMContentLoaded', () => {
-  const hash = window.location.hash.replace('#', '');
-  if (tabOrder.includes(hash)) {
-    switchTool(hash, false);
+// Always ensure page reloads at the very top on Currency Converter only
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
+function resetToTopAndCurrency() {
+  if (window.location.hash) {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
   }
-});
+  switchTool('currency', false);
+  window.scrollTo(0, 0);
+}
+
+window.addEventListener('DOMContentLoaded', resetToTopAndCurrency);
+window.addEventListener('load', resetToTopAndCurrency);
 
 // ==========================================
 // Helper Formatters & Copy Setup
@@ -715,8 +722,8 @@ if (emiTotalSlider) {
 }
 
 setupCopyAction('copyEmiBtn', 'copyEmiLabel', () => {
-  return `EMI Installment: Monthly $${emiMonthlyOutput.textContent}, Financed Loan $${emiFinancedOutput.textContent}, Total Interest $${emiInterestOutput.textContent}, Total Outlay $${emiTotalPayableOutput.textContent}`;
-}, 'Copy EMI Details');
+  return `Installment Details: Monthly $${emiMonthlyOutput.textContent}, Financed Loan $${emiFinancedOutput.textContent}, Total Interest $${emiInterestOutput.textContent}, Total Outlay $${emiTotalPayableOutput.textContent}`;
+}, 'Copy Installment Details');
 
 // ==========================================
 // TOOL 4: Investment / Compound Growth
