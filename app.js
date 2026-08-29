@@ -256,11 +256,13 @@ async function convert() {
     // Update main result
     resultValueEl.textContent = formatAmount(converted);
 
-    // Update rate info texts
-    rateInfoText.innerHTML = `1 ${state.from} = ${formatNum(rate)} ${state.to}<br>1 ${state.to} = ${formatNum(inverse)} ${state.from}`;
-    
-    // Static text as per design image
-    lastUpdated.textContent = 'Mid-market rate at ' + new Date().toISOString().substring(11, 16) + ' UTC';
+    // Update rate info texts if present
+    if (rateInfoText) {
+      rateInfoText.innerHTML = `1 ${state.from} = ${formatNum(rate)} ${state.to}<br>1 ${state.to} = ${formatNum(inverse)} ${state.from}`;
+    }
+    if (lastUpdated) {
+      lastUpdated.textContent = 'Mid-market rate at ' + new Date().toISOString().substring(11, 16) + ' UTC';
+    }
 
   } catch (err) {
     console.error(err);
