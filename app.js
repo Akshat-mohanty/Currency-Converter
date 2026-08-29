@@ -368,11 +368,27 @@ function toggleDropdown(side) {
 // ---- Event Listeners ----
 convertBtn.addEventListener('click', convert);
 
+let swapRotated = false;
 swapBtn.addEventListener('click', () => {
+  swapRotated = !swapRotated;
+  swapBtn.classList.toggle('spin', swapRotated);
   const tmp = state.from;
   selectCurrency('from', state.to);
   selectCurrency('to',   tmp);
   convert();
+});
+
+// Quick-select pair chips
+document.querySelectorAll('.quick-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const from = chip.dataset.from;
+    const to = chip.dataset.to;
+    if (from && to) {
+      selectCurrency('from', from);
+      selectCurrency('to', to);
+      convert();
+    }
+  });
 });
 
 let debounce;
