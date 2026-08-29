@@ -791,6 +791,90 @@ setupCopyAction('copyInvBtn', 'copyInvLabel', () => {
   return `Investment Plan: Future Wealth $${invFutureWealthOutput.textContent}, Total Invested $${invTotalInvestedOutput.textContent}, Wealth Growth +$${invTotalGainsOutput.textContent}`;
 }, 'Copy Investment Plan');
 
+// ==========================================
+// User Authentication State & Header
+// ==========================================
+function getSessionUser() {
+  try {
+    const raw = localStorage.getItem('santerra_user');
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function updateHeaderAuth() {
+  const headerAuth = document.getElementById('headerAuth');
+  if (!headerAuth) return;
+
+  const user = getSessionUser();
+  if (user) {
+    const displayName = user.name || (user.email ? user.email.split('@')[0] : 'User');
+    const initial = displayName.charAt(0).toUpperCase();
+
+    const avatarHtml = user.picture
+      ? `<img src="${user.picture}" alt="${displayName}" class="user-avatar-img" referrerpolicy="no-referrer" />`
+      : `<div class="user-avatar-initials">${initial}</div>`;
+
+    headerAuth.innerHTML = `
+      <div class="user-profile-pill" id="userProfilePill" tabindex="0" role="button" aria-haspopup="true" aria-expanded="false">
+        ${avatarHtml}
+        <span class="user-display-name">${displayName.split(' ')[0]}</span>
+        <svg class="user-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+
+      <div class="user-dropdown-menu" id="userDropdownMenu">
+        <div class="user-menu-header">
+          <span class="user-menu-name">${displayName}</span>
+          <span class="user-menu-email">${user.email || ''}</span>
+        </div>
+        <button type="button" class="user-logout-btn" id="userLogoutBtn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          <span>Sign Out</span>
+        </button>
+      </div>
+    `;
+
+    const pill = document.getElementById('userProfilePill');
+    const menu = document.getElementById('userDropdownMenu');
+    const logoutBtn = document.getElementById('userLogoutBtn');
+
+    if (pill && menu) {
+      pill.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = menu.classList.toggle('open');
+        pill.classList.toggle('open', isOpen);
+        pill.setAttribute('aria-expanded', isOpen);
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!headerAuth.contains(e.target)) {
+          menu.classList.remove('open');
+          pill.classList.remove('open');
+          pill.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', () => {
+        localStorage.removeItem('santerra_user');
+        updateHeaderAuth();
+      });
+    }
+  } else {
+    headerAuth.innerHTML = `
+      <a href="auth.html" class="header-signin-btn" id="headerSignInBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>Sign In</span>
+      </a>
+    `;
+  }
+}
+
 // ---- Init ----
 function init() {
   buildDropdown(document.getElementById('fromList'), document.getElementById('fromSearch'), 'from');
@@ -804,6 +888,7 @@ function init() {
   calculateLoan();
   calculateEmi();
   calculateInvestment();
+  updateHeaderAuth();
 }
 
 init();
