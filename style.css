@@ -1173,11 +1173,11 @@ body {
   line-height: 1.55;
 }
 
-/* Bottom CTA Banner */
+/* Bottom CTA Banner (Compact & Short) */
 .cta-banner-section {
   width: 100%;
-  max-width: 960px;
-  margin: 30px auto 64px auto;
+  max-width: 900px;
+  margin: 20px auto 44px auto;
   padding: 0 20px;
   text-align: center;
 }
@@ -1185,44 +1185,30 @@ body {
 .cta-banner-card {
   background: var(--bg-surface);
   border: 1px solid var(--border-subtle);
-  border-radius: 28px;
-  padding: 56px 32px;
+  border-radius: 20px;
+  padding: 32px 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: var(--card-shadow);
-}
-
-.cta-banner-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 14px;
-  border-radius: var(--radius-pill);
-  background: var(--accent-soft);
-  border: 1px solid var(--accent-border);
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--accent);
-  margin-bottom: 18px;
+  box-shadow: 0 2px 10px rgba(18, 19, 18, 0.03);
 }
 
 .cta-banner-title {
   font-family: var(--font-serif);
-  font-size: 2.6rem;
+  font-size: 1.85rem;
   font-weight: 700;
-  letter-spacing: -0.8px;
+  letter-spacing: -0.5px;
   color: var(--text-main);
-  margin-bottom: 12px;
-  max-width: 600px;
+  margin-bottom: 8px;
+  max-width: 540px;
 }
 
 .cta-banner-subtitle {
-  font-size: 1.02rem;
+  font-size: 0.92rem;
   color: var(--text-muted);
-  max-width: 500px;
-  line-height: 1.6;
-  margin-bottom: 28px;
+  max-width: 480px;
+  line-height: 1.5;
+  margin-bottom: 20px;
 }
 
 .cta-banner-btn {
@@ -1232,19 +1218,19 @@ body {
   background: var(--accent);
   color: #FFFFFF;
   font-family: var(--font);
-  font-size: 0.96rem;
+  font-size: 0.9rem;
   font-weight: 600;
-  padding: 14px 34px;
+  padding: 10px 24px;
   border-radius: var(--radius-pill);
   text-decoration: none;
-  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.22);
+  box-shadow: 0 4px 16px rgba(27, 67, 50, 0.18);
   transition: all 0.2s ease;
 }
 
 .cta-banner-btn:hover {
   background: var(--accent-hover);
-  box-shadow: 0 12px 32px rgba(27, 67, 50, 0.3);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(27, 67, 50, 0.25);
+  transform: translateY(-1px);
 }
 
 /* Comprehensive Footer (Wishlist-Inspired) */
