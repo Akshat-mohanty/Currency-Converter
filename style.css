@@ -375,54 +375,9 @@
   transform: rotate(180deg) scale(1.1);
 }
 
-/* Quick Popular Pairs */
-.quick-pairs {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 16px;
-  padding: 0 4px;
-}
-
-.quick-title {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--text-muted);
-}
-
-.quick-chips {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.quick-chip {
-  background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  border-radius: var(--radius-pill);
-  padding: 5px 12px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--text-main);
-  font-family: var(--font);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.quick-chip:hover {
-  background: var(--bg-white);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-}
-
-.quick-chip:active {
-  transform: scale(0.97);
-}
-
 /* Convert Button */
 .convert-btn {
-  margin-top: 18px;
+  margin-top: 16px;
   background-color: var(--btn-black);
   color: var(--bg-white);
   border: none;
@@ -506,12 +461,5 @@
   }
   .cs-code {
     font-size: 0.95rem;
-  }
-  .quick-chips {
-    gap: 6px;
-  }
-  .quick-chip {
-    padding: 4px 10px;
-    font-size: 0.72rem;
   }
 }

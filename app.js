@@ -380,19 +380,6 @@ swapBtn.addEventListener('click', () => {
   convert();
 });
 
-// Quick-select pair chips
-document.querySelectorAll('.quick-chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    const from = chip.dataset.from;
-    const to = chip.dataset.to;
-    if (from && to) {
-      selectCurrency('from', from);
-      selectCurrency('to', to);
-      convert();
-    }
-  });
-});
-
 let debounce;
 fromAmountEl.addEventListener('input', () => {
   clearTimeout(debounce);
