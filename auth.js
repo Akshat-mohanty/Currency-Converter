@@ -41,7 +41,7 @@ function setMode(mode) {
     tabSignIn.setAttribute('aria-selected', 'false');
 
     authTitle.textContent = 'Create your account';
-    authSubtitle.textContent = 'Join Santerra to access your personal financial toolkit';
+    authSubtitle.textContent = 'Login to save your progress';
     nameGroup.style.display = 'block';
     submitBtnText.textContent = 'Create Account';
     googleBtnLabel.textContent = 'Sign up with Google';
@@ -55,7 +55,7 @@ function setMode(mode) {
     tabSignUp.setAttribute('aria-selected', 'false');
 
     authTitle.textContent = 'Welcome back';
-    authSubtitle.textContent = 'Sign in to your account to continue';
+    authSubtitle.textContent = 'Login to save your progress';
     nameGroup.style.display = 'none';
     submitBtnText.textContent = 'Sign In';
     googleBtnLabel.textContent = 'Continue with Google';
@@ -63,6 +63,9 @@ function setMode(mode) {
     switchModeBtn.textContent = 'Create one now';
     if (fullNameInput) fullNameInput.required = false;
   }
+
+  // Re-sync single Google button on mode change
+  initGoogleSignIn();
 }
 
 if (tabSignIn && tabSignUp) {
@@ -173,6 +176,7 @@ function handleGoogleCredentialResponse(response) {
 function initGoogleSignIn() {
   const clientId = getGoogleClientId();
   const googleBtnWrapper = document.getElementById('googleBtnWrapper');
+  const googleCustomBtn = document.getElementById('googleCustomBtn');
 
   if (window.google && window.google.accounts && window.google.accounts.id) {
     try {
@@ -192,13 +196,28 @@ function initGoogleSignIn() {
           shape: 'pill',
           text: currentMode === 'signup' ? 'signup_with' : 'continue_with',
           logo_alignment: 'left',
-          width: 380
+          width: 360
         });
+
+        // Strictly hide the fallback button so only ONE Google button is displayed
+        if (googleCustomBtn) {
+          googleCustomBtn.style.display = 'none';
+        }
+        return;
       }
     } catch (err) {
       console.warn('Google GSI initialization error:', err);
     }
   }
+
+  // Fallback: If Google GSI is not loaded or blocked, show the custom Google button
+  setTimeout(() => {
+    if (googleBtnWrapper && (!googleBtnWrapper.hasChildNodes() || googleBtnWrapper.children.length === 0)) {
+      if (googleCustomBtn) {
+        googleCustomBtn.style.display = 'flex';
+      }
+    }
+  }, 600);
 }
 
 // Trigger Google OAuth or prompt for setup
