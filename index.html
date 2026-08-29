@@ -3,17 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Currency Converter" />
+  <meta name="description" content="Santerra - Currency Converter" />
   <title>Santerra - Currency Converter</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <!-- Using Outfit font which closely matches the rounded geometric font in the image -->
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <!-- App Header with Logo -->
+  <!-- App Header with Logo at Top Left -->
   <header class="app-header">
     <div class="logo">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -23,110 +22,153 @@
       </svg>
       <span class="brand-title">Santerra</span>
     </div>
+    <nav class="nav-links">
+      <a href="#converter" class="nav-btn">Convert Now</a>
+    </nav>
   </header>
 
   <main class="main-content">
     
-    <!-- Hero Title (Strictly 2 short lines) -->
-    <div class="hero-section">
-      <h1 class="hero-title">Exchange currencies at live market rates.</h1>
-      <p class="hero-subtitle">Real-time calculations across 160+ world currencies.</p>
-    </div>
-
-    <!-- Converter Card -->
-    <div class="converter-wrapper">
-      
-      <!-- Exchange Boxes Container -->
-      <div class="exchange-boxes-wrapper">
-        <!-- Top Section: From Currency -->
-        <div class="exchange-box box-top">
-          <div class="box-inner">
-            <div class="amount-group">
-              <label for="fromAmount" class="funds-label">You send</label>
-              <input type="number" id="fromAmount" class="amount-input" value="1.00" min="0" step="any" placeholder="0.00" autocomplete="off" />
-            </div>
-            
-            <div class="currency-selector-group">
-              <!-- Dropdown Trigger -->
-              <div class="cs-wrapper" id="fromWrapper">
-                <button class="cs-trigger" id="fromTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Select source currency">
-                  <span class="cs-flag" id="fromFlag">🇺🇸</span>
-                  <span class="cs-code" id="fromCode">USD</span>
-                  <svg class="cs-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
-                
-                <!-- Dropdown Panel -->
-                <div class="cs-panel" id="fromPanel">
-                  <div class="cs-search-row">
-                    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" class="cs-search" id="fromSearch" placeholder="Search currency..." autocomplete="off" />
-                  </div>
-                  <ul class="cs-list" id="fromList"></ul>
-                  <div class="cs-empty" id="fromEmpty">No results found</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Separator / Swap Button -->
-        <div class="swap-container">
-          <div class="swap-line line-left"></div>
-          <button class="swap-btn" id="swapBtn" type="button" aria-label="Swap currencies" title="Swap currencies">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/>
-            </svg>
-          </button>
-          <div class="swap-line line-right"></div>
-        </div>
-
-        <!-- Bottom Section: To Currency -->
-        <div class="exchange-box box-bottom">
-          <div class="box-inner">
-            <div class="amount-group">
-              <span class="funds-label">You receive</span>
-              <div class="amount-input result-value" id="resultValue">0.86</div>
-            </div>
-            
-            <div class="currency-selector-group">
-              <!-- Dropdown Trigger -->
-              <div class="cs-wrapper" id="toWrapper">
-                <button class="cs-trigger" id="toTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Select target currency">
-                  <span class="cs-flag" id="toFlag">🇪🇺</span>
-                  <span class="cs-code" id="toCode">EUR</span>
-                  <svg class="cs-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
-                </button>
-                
-                <!-- Dropdown Panel -->
-                <div class="cs-panel" id="toPanel">
-                  <div class="cs-search-row">
-                    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                    <input type="text" class="cs-search" id="toSearch" placeholder="Search currency..." autocomplete="off" />
-                  </div>
-                  <ul class="cs-list" id="toList"></ul>
-                  <div class="cs-empty" id="toEmpty">No results found</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+    <!-- Hero Landing Section (Above the Fold) -->
+    <section class="landing-hero">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        <span>Real-Time Exchange Rates</span>
       </div>
 
-      <!-- Convert Button -->
-      <button class="convert-btn" id="convertBtn" type="button">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.21l-5.44-1.28"/>
-        </svg>
-        <span class="btn-label">Convert Now</span>
-        <div class="btn-spinner" id="btnSpinner"></div>
-      </button>
+      <h1 class="hero-title">Exchange currencies with precision & ease.</h1>
+      <p class="hero-subtitle">Accurate mid-market calculations across 160+ world currencies.</p>
 
-    </div>
+      <div class="hero-actions">
+        <a href="#converter" class="hero-cta-btn" id="scrollCtaBtn">
+          <span>Start Converting</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <polyline points="19 12 12 19 5 12"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <!-- Feature Metric Badges -->
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <span class="stat-icon">🌍</span>
+          <span class="stat-text">160+ Currencies</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-icon">⚡</span>
+          <span class="stat-text">Instant Conversion</span>
+        </div>
+        <div class="stat-pill">
+          <span class="stat-icon">🏦</span>
+          <span class="stat-text">Daily ECB Rates</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Converter Section (Revealed on Scroll) -->
+    <section class="converter-section" id="converter">
+      <div class="section-label">
+        <span class="label-line"></span>
+        <span class="label-text">Live Converter</span>
+        <span class="label-line"></span>
+      </div>
+
+      <div class="converter-wrapper">
+        <!-- Exchange Boxes Container -->
+        <div class="exchange-boxes-wrapper">
+          <!-- Top Section: From Currency -->
+          <div class="exchange-box box-top">
+            <div class="box-inner">
+              <div class="amount-group">
+                <label for="fromAmount" class="funds-label">You send</label>
+                <input type="number" id="fromAmount" class="amount-input" value="1.00" min="0" step="any" placeholder="0.00" autocomplete="off" />
+              </div>
+              
+              <div class="currency-selector-group">
+                <!-- Dropdown Trigger -->
+                <div class="cs-wrapper" id="fromWrapper">
+                  <button class="cs-trigger" id="fromTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Select source currency">
+                    <span class="cs-flag" id="fromFlag">🇺🇸</span>
+                    <span class="cs-code" id="fromCode">USD</span>
+                    <svg class="cs-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  
+                  <!-- Dropdown Panel -->
+                  <div class="cs-panel" id="fromPanel">
+                    <div class="cs-search-row">
+                      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                      <input type="text" class="cs-search" id="fromSearch" placeholder="Search currency..." autocomplete="off" />
+                    </div>
+                    <ul class="cs-list" id="fromList"></ul>
+                    <div class="cs-empty" id="fromEmpty">No results found</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Separator / Swap Button -->
+          <div class="swap-container">
+            <div class="swap-line line-left"></div>
+            <button class="swap-btn" id="swapBtn" type="button" aria-label="Swap currencies" title="Swap currencies">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 16V4m0 0L3 8m4-4l4 4m6 4v12m0 0l4-4m-4 4l-4-4"/>
+              </svg>
+            </button>
+            <div class="swap-line line-right"></div>
+          </div>
+
+          <!-- Bottom Section: To Currency -->
+          <div class="exchange-box box-bottom">
+            <div class="box-inner">
+              <div class="amount-group">
+                <span class="funds-label">You receive</span>
+                <div class="amount-input result-value" id="resultValue">0.86</div>
+              </div>
+              
+              <div class="currency-selector-group">
+                <!-- Dropdown Trigger -->
+                <div class="cs-wrapper" id="toWrapper">
+                  <button class="cs-trigger" id="toTrigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-label="Select target currency">
+                    <span class="cs-flag" id="toFlag">🇪🇺</span>
+                    <span class="cs-code" id="toCode">EUR</span>
+                    <svg class="cs-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  
+                  <!-- Dropdown Panel -->
+                  <div class="cs-panel" id="toPanel">
+                    <div class="cs-search-row">
+                      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                      <input type="text" class="cs-search" id="toSearch" placeholder="Search currency..." autocomplete="off" />
+                    </div>
+                    <ul class="cs-list" id="toList"></ul>
+                    <div class="cs-empty" id="toEmpty">No results found</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Convert Button -->
+        <button class="convert-btn" id="convertBtn" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.21l-5.44-1.28"/>
+          </svg>
+          <span class="btn-label">Convert Now</span>
+          <div class="btn-spinner" id="btnSpinner"></div>
+        </button>
+      </div>
+    </section>
 
   </main>
 
+  <!-- Pinned Bottom Footer with Found a Bug? -->
   <footer class="copyright-footer">
-    © 2026 Akshat Mohanty. Built with ❤️
+    <span>© 2026 Akshat Mohanty. Built with ❤️</span>
+    <span class="footer-separator">•</span>
+    <a href="https://github.com/Akshat-mohanty/Currency-Converter/issues" target="_blank" rel="noopener noreferrer" class="bug-link">Found a Bug?</a>
   </footer>
 
   <script src="app.js"></script>

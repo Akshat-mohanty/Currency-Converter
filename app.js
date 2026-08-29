@@ -401,6 +401,16 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') { closeDropdown('from'); closeDropdown('to'); }
 });
 
+// Smooth scroll to converter
+const scrollCtaBtn = document.getElementById('scrollCtaBtn');
+if (scrollCtaBtn) {
+  scrollCtaBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const target = document.getElementById('converter');
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+}
+
 // ---- Init ----
 function init() {
   buildDropdown(document.getElementById('fromList'), document.getElementById('fromSearch'), 'from');
