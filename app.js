@@ -471,21 +471,38 @@ document.documentElement.removeAttribute('data-theme');
 // ==========================================
 const navTabs = document.querySelectorAll('.nav-tab');
 const toolPanels = document.querySelectorAll('.tool-panel');
+const tabOrder = ['currency', 'loan', 'emi', 'investment'];
+let currentTabIndex = 0;
 
-function switchTool(tabName) {
+function switchTool(tabName, animate = true) {
+  const nextIndex = tabOrder.indexOf(tabName);
+  const direction = nextIndex >= currentTabIndex ? 'slide-from-right' : 'slide-from-left';
+  if (nextIndex !== -1) {
+    currentTabIndex = nextIndex;
+  }
+
   navTabs.forEach(tab => {
     tab.classList.toggle('active', tab.getAttribute('data-tab') === tabName);
   });
+
   toolPanels.forEach(panel => {
     const isTarget = panel.id === `${tabName}Panel`;
-    panel.classList.toggle('active', isTarget);
+    panel.classList.remove('active', 'slide-from-right', 'slide-from-left');
+    if (isTarget) {
+      // Force DOM reflow to restart CSS keyframe animations cleanly
+      void panel.offsetWidth;
+      panel.classList.add('active');
+      if (animate) {
+        panel.classList.add(direction);
+      }
+    }
   });
 }
 
 navTabs.forEach(tab => {
   tab.addEventListener('click', () => {
     const tabName = tab.getAttribute('data-tab');
-    switchTool(tabName);
+    switchTool(tabName, true);
     if (history.replaceState) {
       history.replaceState(null, '', `#${tabName}`);
     }
@@ -494,8 +511,8 @@ navTabs.forEach(tab => {
 
 window.addEventListener('DOMContentLoaded', () => {
   const hash = window.location.hash.replace('#', '');
-  if (['currency', 'loan', 'emi', 'investment'].includes(hash)) {
-    switchTool(hash);
+  if (tabOrder.includes(hash)) {
+    switchTool(hash, false);
   }
 });
 
