@@ -638,15 +638,47 @@ function setupCopyAction(btnId, labelId, textGetter, defaultLabel) {
 }
 
 // ==========================================
+// Two-Way Sync Helper for Range Sliders & Inputs
+// ==========================================
+function syncSliderAndInput(slider, input, onUpdate, isFloat = false) {
+  if (!slider || !input) return;
+
+  slider.addEventListener('input', () => {
+    input.value = isFloat ? parseFloat(slider.value).toFixed(1) : slider.value;
+    onUpdate();
+  });
+
+  input.addEventListener('input', () => {
+    let val = parseFloat(input.value);
+    if (isNaN(val)) val = 0;
+    if (val > parseFloat(slider.max)) {
+      slider.max = Math.max(val * 1.5, val + 100);
+    }
+    slider.value = val;
+    onUpdate();
+  });
+
+  input.addEventListener('blur', () => {
+    let val = parseFloat(input.value);
+    if (isNaN(val) || val < 0) {
+      val = 0;
+      input.value = isFloat ? '0.0' : '0';
+      slider.value = 0;
+      onUpdate();
+    }
+  });
+}
+
+// ==========================================
 // TOOL 2: Loan Calculator
 // ==========================================
 const loanAmountSlider = document.getElementById('loanAmountSlider');
 const loanRateSlider = document.getElementById('loanRateSlider');
 const loanTermSlider = document.getElementById('loanTermSlider');
 
-const loanAmountBadge = document.getElementById('loanAmountBadge');
-const loanRateBadge = document.getElementById('loanRateBadge');
-const loanTermBadge = document.getElementById('loanTermBadge');
+const loanAmountInput = document.getElementById('loanAmountInput');
+const loanRateInput = document.getElementById('loanRateInput');
+const loanTermInput = document.getElementById('loanTermInput');
 
 const loanMonthlyOutput = document.getElementById('loanMonthlyOutput');
 const loanPrincipalOutput = document.getElementById('loanPrincipalOutput');
@@ -660,33 +692,41 @@ const loanInterestPct = document.getElementById('loanInterestPct');
 
 function calculateLoan() {
   if (!loanAmountSlider) return;
-  const P = parseFloat(loanAmountSlider.value);
-  const annualRate = parseFloat(loanRateSlider.value);
-  const years = parseInt(loanTermSlider.value, 10);
+  const P = parseFloat(loanAmountSlider.value) || 0;
+  const annualRate = parseFloat(loanRateSlider.value) || 0;
+  const years = parseInt(loanTermSlider.value, 10) || 0;
 
-  if (loanAmountBadge) loanAmountBadge.textContent = P.toLocaleString('en-US');
-  if (loanRateBadge) loanRateBadge.textContent = annualRate.toFixed(1);
-  if (loanTermBadge) loanTermBadge.textContent = years;
+  if (loanAmountInput && document.activeElement !== loanAmountInput) {
+    loanAmountInput.value = P;
+  }
+  if (loanRateInput && document.activeElement !== loanRateInput) {
+    loanRateInput.value = annualRate.toFixed(1);
+  }
+  if (loanTermInput && document.activeElement !== loanTermInput) {
+    loanTermInput.value = years;
+  }
 
   const r = (annualRate / 100) / 12;
   const n = years * 12;
 
   let monthly = 0;
-  if (r === 0) {
+  if (n === 0 || P === 0) {
+    monthly = 0;
+  } else if (r === 0) {
     monthly = P / n;
   } else {
     monthly = P * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
   }
 
-  const totalPayment = monthly * n;
-  const totalInterest = totalPayment - P;
+  const totalPayment = n === 0 ? P : monthly * n;
+  const totalInterest = Math.max(0, totalPayment - P);
 
   if (loanMonthlyOutput) loanMonthlyOutput.textContent = formatCurrency(monthly);
   if (loanPrincipalOutput) loanPrincipalOutput.textContent = formatCurrency(P);
   if (loanInterestOutput) loanInterestOutput.textContent = formatCurrency(totalInterest);
   if (loanTotalOutput) loanTotalOutput.textContent = formatCurrency(totalPayment);
 
-  const pPct = Math.round((P / totalPayment) * 100) || 50;
+  const pPct = totalPayment > 0 ? Math.round((P / totalPayment) * 100) : 100;
   const iPct = 100 - pPct;
 
   if (loanPrincipalBar) loanPrincipalBar.style.width = `${pPct}%`;
@@ -695,10 +735,10 @@ function calculateLoan() {
   if (loanInterestPct) loanInterestPct.textContent = `${iPct}%`;
 }
 
-if (loanAmountSlider) {
-  [loanAmountSlider, loanRateSlider, loanTermSlider].forEach(slider => {
-    slider.addEventListener('input', calculateLoan);
-  });
+if (loanAmountSlider && loanAmountInput) {
+  syncSliderAndInput(loanAmountSlider, loanAmountInput, calculateLoan, false);
+  syncSliderAndInput(loanRateSlider, loanRateInput, calculateLoan, true);
+  syncSliderAndInput(loanTermSlider, loanTermInput, calculateLoan, false);
 }
 
 setupCopyAction('copyLoanBtn', 'copyLoanLabel', () => {
@@ -713,10 +753,10 @@ const emiDownSlider = document.getElementById('emiDownSlider');
 const emiRateSlider = document.getElementById('emiRateSlider');
 const emiTenureSlider = document.getElementById('emiTenureSlider');
 
-const emiTotalBadge = document.getElementById('emiTotalBadge');
-const emiDownBadge = document.getElementById('emiDownBadge');
-const emiRateBadge = document.getElementById('emiRateBadge');
-const emiTenureBadge = document.getElementById('emiTenureBadge');
+const emiTotalInput = document.getElementById('emiTotalInput');
+const emiDownInput = document.getElementById('emiDownInput');
+const emiRateInput = document.getElementById('emiRateInput');
+const emiTenureInput = document.getElementById('emiTenureInput');
 
 const emiMonthlyOutput = document.getElementById('emiMonthlyOutput');
 const emiFinancedOutput = document.getElementById('emiFinancedOutput');
@@ -726,28 +766,36 @@ const tenureChips = document.querySelectorAll('.tenure-chip');
 
 function calculateEmi() {
   if (!emiTotalSlider) return;
-  const total = parseFloat(emiTotalSlider.value);
-  let down = parseFloat(emiDownSlider.value);
+  const total = parseFloat(emiTotalSlider.value) || 0;
+  let down = parseFloat(emiDownSlider.value) || 0;
   if (down > total) {
     down = total;
     emiDownSlider.value = down;
   }
-  emiDownSlider.max = total;
+  emiDownSlider.max = Math.max(total, 1);
 
-  const annualRate = parseFloat(emiRateSlider.value);
-  const months = parseInt(emiTenureSlider.value, 10);
+  const annualRate = parseFloat(emiRateSlider.value) || 0;
+  const months = parseInt(emiTenureSlider.value, 10) || 1;
 
-  if (emiTotalBadge) emiTotalBadge.textContent = total.toLocaleString('en-US');
-  if (emiDownBadge) emiDownBadge.textContent = down.toLocaleString('en-US');
-  if (emiRateBadge) emiRateBadge.textContent = annualRate.toFixed(1);
-  if (emiTenureBadge) emiTenureBadge.textContent = months;
+  if (emiTotalInput && document.activeElement !== emiTotalInput) {
+    emiTotalInput.value = total;
+  }
+  if (emiDownInput && document.activeElement !== emiDownInput) {
+    emiDownInput.value = down;
+  }
+  if (emiRateInput && document.activeElement !== emiRateInput) {
+    emiRateInput.value = annualRate.toFixed(1);
+  }
+  if (emiTenureInput && document.activeElement !== emiTenureInput) {
+    emiTenureInput.value = months;
+  }
 
   const P = Math.max(0, total - down);
   const r = (annualRate / 100) / 12;
   const n = months;
 
   let emi = 0;
-  if (P === 0) {
+  if (P === 0 || n === 0) {
     emi = 0;
   } else if (r === 0) {
     emi = P / n;
@@ -769,15 +817,17 @@ function calculateEmi() {
   });
 }
 
-if (emiTotalSlider) {
-  [emiTotalSlider, emiDownSlider, emiRateSlider, emiTenureSlider].forEach(el => {
-    el.addEventListener('input', calculateEmi);
-  });
+if (emiTotalSlider && emiTotalInput) {
+  syncSliderAndInput(emiTotalSlider, emiTotalInput, calculateEmi, false);
+  syncSliderAndInput(emiDownSlider, emiDownInput, calculateEmi, false);
+  syncSliderAndInput(emiRateSlider, emiRateInput, calculateEmi, true);
+  syncSliderAndInput(emiTenureSlider, emiTenureInput, calculateEmi, false);
 
   tenureChips.forEach(chip => {
     chip.addEventListener('click', () => {
       const val = parseInt(chip.getAttribute('data-tenure'), 10);
       emiTenureSlider.value = val;
+      if (emiTenureInput) emiTenureInput.value = val;
       calculateEmi();
     });
   });
@@ -795,10 +845,10 @@ const invMonthlySlider = document.getElementById('invMonthlySlider');
 const invRateSlider = document.getElementById('invRateSlider');
 const invYearsSlider = document.getElementById('invYearsSlider');
 
-const invInitialBadge = document.getElementById('invInitialBadge');
-const invMonthlyBadge = document.getElementById('invMonthlyBadge');
-const invRateBadge = document.getElementById('invRateBadge');
-const invYearsBadge = document.getElementById('invYearsBadge');
+const invInitialInput = document.getElementById('invInitialInput');
+const invMonthlyInput = document.getElementById('invMonthlyInput');
+const invRateInput = document.getElementById('invRateInput');
+const invYearsInput = document.getElementById('invYearsInput');
 
 const invFutureWealthOutput = document.getElementById('invFutureWealthOutput');
 const invTotalInvestedOutput = document.getElementById('invTotalInvestedOutput');
@@ -811,15 +861,23 @@ const invGainPct = document.getElementById('invGainPct');
 
 function calculateInvestment() {
   if (!invInitialSlider) return;
-  const initial = parseFloat(invInitialSlider.value);
-  const monthly = parseFloat(invMonthlySlider.value);
-  const annualReturn = parseFloat(invRateSlider.value);
-  const years = parseInt(invYearsSlider.value, 10);
+  const initial = parseFloat(invInitialSlider.value) || 0;
+  const monthly = parseFloat(invMonthlySlider.value) || 0;
+  const annualReturn = parseFloat(invRateSlider.value) || 0;
+  const years = parseInt(invYearsSlider.value, 10) || 0;
 
-  if (invInitialBadge) invInitialBadge.textContent = initial.toLocaleString('en-US');
-  if (invMonthlyBadge) invMonthlyBadge.textContent = monthly.toLocaleString('en-US');
-  if (invRateBadge) invRateBadge.textContent = annualReturn.toFixed(1);
-  if (invYearsBadge) invYearsBadge.textContent = years;
+  if (invInitialInput && document.activeElement !== invInitialInput) {
+    invInitialInput.value = initial;
+  }
+  if (invMonthlyInput && document.activeElement !== invMonthlyInput) {
+    invMonthlyInput.value = monthly;
+  }
+  if (invRateInput && document.activeElement !== invRateInput) {
+    invRateInput.value = annualReturn.toFixed(1);
+  }
+  if (invYearsInput && document.activeElement !== invYearsInput) {
+    invYearsInput.value = years;
+  }
 
   const r = (annualReturn / 100) / 12;
   const n = years * 12;
@@ -834,7 +892,7 @@ function calculateInvestment() {
   if (invTotalInvestedOutput) invTotalInvestedOutput.textContent = formatCurrency(totalInvested);
   if (invTotalGainsOutput) invTotalGainsOutput.textContent = formatCurrency(totalGain);
 
-  const invPct = Math.round((totalInvested / totalWealth) * 100) || 50;
+  const invPct = totalWealth > 0 ? Math.round((totalInvested / totalWealth) * 100) : 100;
   const gainPct = 100 - invPct;
 
   if (invInvestedBar) invInvestedBar.style.width = `${invPct}%`;
@@ -843,10 +901,11 @@ function calculateInvestment() {
   if (invGainPct) invGainPct.textContent = `${gainPct}%`;
 }
 
-if (invInitialSlider) {
-  [invInitialSlider, invMonthlySlider, invRateSlider, invYearsSlider].forEach(slider => {
-    slider.addEventListener('input', calculateInvestment);
-  });
+if (invInitialSlider && invInitialInput) {
+  syncSliderAndInput(invInitialSlider, invInitialInput, calculateInvestment, false);
+  syncSliderAndInput(invMonthlySlider, invMonthlyInput, calculateInvestment, false);
+  syncSliderAndInput(invRateSlider, invRateInput, calculateInvestment, true);
+  syncSliderAndInput(invYearsSlider, invYearsInput, calculateInvestment, false);
 }
 
 setupCopyAction('copyInvBtn', 'copyInvLabel', () => {

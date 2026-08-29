@@ -156,28 +156,37 @@
             <!-- Loan Amount -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="loanAmountSlider" class="field-label">Loan Amount</label>
-                <div class="field-value-badge">$<span id="loanAmountBadge">25,000</span></div>
+                <label for="loanAmountInput" class="field-label">Loan Amount</label>
+                <div class="field-value-badge">
+                  <span class="badge-prefix">$</span>
+                  <input type="number" class="badge-input" id="loanAmountInput" min="0" step="1" value="25000" />
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="loanAmountSlider" min="1000" max="250000" step="500" value="25000" />
+              <input type="range" class="calc-slider" id="loanAmountSlider" min="0" max="250000" step="1" value="25000" />
             </div>
 
             <!-- Interest Rate -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="loanRateSlider" class="field-label">Annual Interest Rate</label>
-                <div class="field-value-badge"><span id="loanRateBadge">6.5</span>%</div>
+                <label for="loanRateInput" class="field-label">Annual Interest Rate</label>
+                <div class="field-value-badge">
+                  <input type="number" class="badge-input small-input" id="loanRateInput" min="0" max="100" step="0.1" value="6.5" />
+                  <span class="badge-suffix">%</span>
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="loanRateSlider" min="1" max="25" step="0.1" value="6.5" />
+              <input type="range" class="calc-slider" id="loanRateSlider" min="0" max="25" step="0.1" value="6.5" />
             </div>
 
             <!-- Loan Term -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="loanTermSlider" class="field-label">Loan Term (Years)</label>
-                <div class="field-value-badge"><span id="loanTermBadge">5</span> Years</div>
+                <label for="loanTermInput" class="field-label">Loan Term (Years)</label>
+                <div class="field-value-badge">
+                  <input type="number" class="badge-input small-input" id="loanTermInput" min="0" max="50" step="1" value="5" />
+                  <span class="badge-suffix">Years</span>
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="loanTermSlider" min="1" max="30" step="1" value="5" />
+              <input type="range" class="calc-slider" id="loanTermSlider" min="0" max="30" step="1" value="5" />
             </div>
           </div>
 
@@ -231,35 +240,47 @@
             <!-- Purchase Price -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="emiTotalSlider" class="field-label">Total Purchase Price</label>
-                <div class="field-value-badge">$<span id="emiTotalBadge">15,000</span></div>
+                <label for="emiTotalInput" class="field-label">Total Purchase Price</label>
+                <div class="field-value-badge">
+                  <span class="badge-prefix">$</span>
+                  <input type="number" class="badge-input" id="emiTotalInput" min="0" step="1" value="15000" />
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="emiTotalSlider" min="500" max="150000" step="500" value="15000" />
+              <input type="range" class="calc-slider" id="emiTotalSlider" min="0" max="150000" step="1" value="15000" />
             </div>
 
             <!-- Down Payment -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="emiDownSlider" class="field-label">Down Payment</label>
-                <div class="field-value-badge">$<span id="emiDownBadge">3,000</span></div>
+                <label for="emiDownInput" class="field-label">Down Payment</label>
+                <div class="field-value-badge">
+                  <span class="badge-prefix">$</span>
+                  <input type="number" class="badge-input" id="emiDownInput" min="0" step="1" value="3000" />
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="emiDownSlider" min="0" max="75000" step="250" value="3000" />
+              <input type="range" class="calc-slider" id="emiDownSlider" min="0" max="75000" step="1" value="3000" />
             </div>
 
             <!-- Interest Rate -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="emiRateSlider" class="field-label">Interest Rate (% p.a.)</label>
-                <div class="field-value-badge"><span id="emiRateBadge">8.0</span>%</div>
+                <label for="emiRateInput" class="field-label">Interest Rate (% p.a.)</label>
+                <div class="field-value-badge">
+                  <input type="number" class="badge-input small-input" id="emiRateInput" min="0" max="100" step="0.1" value="8.0" />
+                  <span class="badge-suffix">%</span>
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="emiRateSlider" min="0" max="30" step="0.25" value="8.0" />
+              <input type="range" class="calc-slider" id="emiRateSlider" min="0" max="30" step="0.1" value="8.0" />
             </div>
 
             <!-- Tenure Preset Pills -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="emiTenureSlider" class="field-label">Tenure (Months)</label>
-                <div class="field-value-badge"><span id="emiTenureBadge">24</span> Months</div>
+                <label for="emiTenureInput" class="field-label">Tenure (Months)</label>
+                <div class="field-value-badge">
+                  <input type="number" class="badge-input small-input" id="emiTenureInput" min="1" max="120" step="1" value="24" />
+                  <span class="badge-suffix">Months</span>
+                </div>
               </div>
               <div class="chips-row">
                 <button type="button" class="tenure-chip" data-tenure="6">6M</button>
@@ -269,7 +290,7 @@
                 <button type="button" class="tenure-chip" data-tenure="48">48M</button>
                 <button type="button" class="tenure-chip" data-tenure="60">60M</button>
               </div>
-              <input type="range" class="calc-slider" id="emiTenureSlider" min="3" max="84" step="1" value="24" />
+              <input type="range" class="calc-slider" id="emiTenureSlider" min="1" max="84" step="1" value="24" />
             </div>
           </div>
 
@@ -311,37 +332,50 @@
             <!-- Initial Deposit -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="invInitialSlider" class="field-label">Initial Deposit</label>
-                <div class="field-value-badge">$<span id="invInitialBadge">5,000</span></div>
+                <label for="invInitialInput" class="field-label">Initial Deposit</label>
+                <div class="field-value-badge">
+                  <span class="badge-prefix">$</span>
+                  <input type="number" class="badge-input" id="invInitialInput" min="0" step="1" value="500" />
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="invInitialSlider" min="0" max="100000" step="500" value="5000" />
+              <input type="range" class="calc-slider" id="invInitialSlider" min="0" max="100000" step="1" value="500" />
             </div>
 
             <!-- Monthly Contribution -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="invMonthlySlider" class="field-label">Monthly Contribution (SIP)</label>
-                <div class="field-value-badge">$<span id="invMonthlyBadge">500</span>/mo</div>
+                <label for="invMonthlyInput" class="field-label">Monthly Contribution (SIP)</label>
+                <div class="field-value-badge">
+                  <span class="badge-prefix">$</span>
+                  <input type="number" class="badge-input" id="invMonthlyInput" min="0" step="1" value="50" />
+                  <span class="badge-suffix">/mo</span>
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="invMonthlySlider" min="0" max="10000" step="50" value="500" />
+              <input type="range" class="calc-slider" id="invMonthlySlider" min="0" max="10000" step="1" value="50" />
             </div>
 
             <!-- Expected Annual Return -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="invRateSlider" class="field-label">Expected Annual Return</label>
-                <div class="field-value-badge"><span id="invRateBadge">10.0</span>%</div>
+                <label for="invRateInput" class="field-label">Expected Annual Return</label>
+                <div class="field-value-badge">
+                  <input type="number" class="badge-input small-input" id="invRateInput" min="0" max="100" step="0.1" value="10.0" />
+                  <span class="badge-suffix">%</span>
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="invRateSlider" min="1" max="30" step="0.5" value="10.0" />
+              <input type="range" class="calc-slider" id="invRateSlider" min="0" max="30" step="0.1" value="10.0" />
             </div>
 
             <!-- Investment Horizon -->
             <div class="calc-field">
               <div class="field-header">
-                <label for="invYearsSlider" class="field-label">Investment Duration</label>
-                <div class="field-value-badge"><span id="invYearsBadge">10</span> Years</div>
+                <label for="invYearsInput" class="field-label">Investment Duration</label>
+                <div class="field-value-badge">
+                  <input type="number" class="badge-input small-input" id="invYearsInput" min="0" max="50" step="1" value="1" />
+                  <span class="badge-suffix">Years</span>
+                </div>
               </div>
-              <input type="range" class="calc-slider" id="invYearsSlider" min="1" max="40" step="1" value="10" />
+              <input type="range" class="calc-slider" id="invYearsSlider" min="0" max="40" step="1" value="1" />
             </div>
           </div>
 

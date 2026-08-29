@@ -519,12 +519,54 @@ body {
   background: var(--bg-white);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-pill);
-  padding: 4px 12px;
+  padding: 3px 10px;
   font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-main);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  cursor: text;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.field-value-badge:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.badge-input {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-main);
+  text-align: right;
+  width: 68px;
+  padding: 0;
+  margin: 0;
+  -moz-appearance: textfield;
+}
+
+.badge-input::-webkit-outer-spin-button,
+.badge-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.badge-input.small-input {
+  width: 44px;
+}
+
+.badge-prefix,
+.badge-suffix {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-main);
+  user-select: none;
 }
 
 /* Custom Styled Range Sliders */
