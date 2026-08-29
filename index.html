@@ -151,13 +151,16 @@
           </div>
         </div>
 
-        <!-- Convert Button -->
-        <button class="convert-btn" id="convertBtn" type="button">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.59-9.21l-5.44-1.28"/>
+        <!-- Copy Conversion Result Button -->
+        <button class="action-btn copy-btn" id="copyBtn" type="button" aria-label="Copy conversion result">
+          <svg class="btn-icon default-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
           </svg>
-          <span class="btn-label">Convert Now</span>
-          <div class="btn-spinner" id="btnSpinner"></div>
+          <svg class="btn-icon success-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span class="btn-label" id="copyBtnLabel">Copy Conversion</span>
         </button>
       </div>
     </section>

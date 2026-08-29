@@ -537,8 +537,8 @@ body {
   transform: rotate(180deg) scale(1.1);
 }
 
-/* Convert Button */
-.convert-btn {
+/* Action Button (Copy Conversion) */
+.action-btn {
   margin-top: 16px;
   background-color: var(--btn-black);
   color: var(--bg-white);
@@ -555,31 +555,40 @@ body {
   cursor: pointer;
   box-shadow: 0 8px 24px -4px rgba(26, 26, 26, 0.25);
   transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
-.convert-btn:hover {
+.action-btn:hover {
   background-color: #2a2a2a;
   transform: translateY(-1px);
   box-shadow: 0 12px 28px -4px rgba(26, 26, 26, 0.32);
 }
 
-.convert-btn:active {
+.action-btn:active {
   transform: scale(0.99);
 }
 
-.btn-spinner {
-  display: none;
-  width: 18px;
-  height: 18px;
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: white;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
+.btn-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
-.convert-btn.loading .btn-label, .convert-btn.loading svg { display: none; }
-.convert-btn.loading .btn-spinner { display: block; }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+.action-btn .success-icon {
+  display: none;
+}
+
+.action-btn.copied {
+  background-color: var(--text-main);
+}
+
+.action-btn.copied .default-icon {
+  display: none;
+}
+
+.action-btn.copied .success-icon {
+  display: block;
+  stroke: #22c55e;
+}
 
 /* Copyright Footer */
 .copyright-footer {

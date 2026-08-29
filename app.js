@@ -245,7 +245,7 @@ async function convert() {
   }
 
   state.converting = true;
-  convertBtn.classList.add('loading');
+  if (convertBtn) convertBtn.classList.add('loading');
 
   try {
     const rates     = await fetchUsdRates();
@@ -269,7 +269,7 @@ async function convert() {
     resultValueEl.textContent = 'Error';
   } finally {
     state.converting = false;
-    convertBtn.classList.remove('loading');
+    if (convertBtn) convertBtn.classList.remove('loading');
   }
 }
 
@@ -368,7 +368,53 @@ function toggleDropdown(side) {
 }
 
 // ---- Event Listeners ----
-convertBtn.addEventListener('click', convert);
+if (convertBtn) convertBtn.addEventListener('click', convert);
+
+// Copy Conversion Action
+const copyBtn = document.getElementById('copyBtn');
+const copyBtnLabel = document.getElementById('copyBtnLabel');
+let copyTimeout;
+
+if (copyBtn) {
+  copyBtn.addEventListener('click', async () => {
+    const textToCopy = `${fromAmountEl.value} ${state.from} = ${resultValueEl.textContent} ${state.to}`;
+    const onSuccess = () => {
+      copyBtn.classList.add('copied');
+      if (copyBtnLabel) copyBtnLabel.textContent = 'Copied to Clipboard!';
+      clearTimeout(copyTimeout);
+      copyTimeout = setTimeout(() => {
+        copyBtn.classList.remove('copied');
+        if (copyBtnLabel) copyBtnLabel.textContent = 'Copy Conversion';
+      }, 2000);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        onSuccess();
+        return;
+      } catch (err) {
+        console.warn('Clipboard API error, trying fallback', err);
+      }
+    }
+
+    // Fallback for older browsers / permission denied contexts
+    const tempInput = document.createElement('textarea');
+    tempInput.value = textToCopy;
+    tempInput.style.position = 'fixed';
+    tempInput.style.opacity = '0';
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    try {
+      document.execCommand('copy');
+      onSuccess();
+    } catch (e) {
+      console.error('Copy fallback failed', e);
+    } finally {
+      document.body.removeChild(tempInput);
+    }
+  });
+}
 
 let swapRotated = false;
 swapBtn.addEventListener('click', () => {
