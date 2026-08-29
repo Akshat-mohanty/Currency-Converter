@@ -24,7 +24,6 @@ const switchModeBtn = document.getElementById('switchModeBtn');
 const authAlert = document.getElementById('authAlert');
 const googleCustomBtn = document.getElementById('googleCustomBtn');
 const googleBtnLabel = document.getElementById('googleBtnLabel');
-const configClientIdBtn = document.getElementById('configClientIdBtn');
 const forgotPassLink = document.getElementById('forgotPassLink');
 
 // ==========================================
@@ -276,10 +275,6 @@ function configureGoogleClientId() {
       hideAlert();
     }, 1000);
   }
-}
-
-if (configClientIdBtn) {
-  configClientIdBtn.addEventListener('click', configureGoogleClientId);
 }
 
 // Initialize when Google script finishes loading

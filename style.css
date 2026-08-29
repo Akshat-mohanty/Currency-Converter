@@ -1411,30 +1411,6 @@ body {
   margin-left: 4px;
 }
 
-.oauth-config-hint {
-  text-align: center;
-}
-
-.config-link-btn {
-  background: transparent;
-  border: none;
-  font-family: var(--font);
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  opacity: 0.75;
-  transition: opacity 0.2s ease, color 0.2s ease;
-}
-
-.config-link-btn:hover {
-  opacity: 1;
-  color: var(--text-main);
-}
-
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .landing-hero .hero-title {
