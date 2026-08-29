@@ -45,13 +45,29 @@ html {
 
 /* Custom Text Selection Highlight */
 ::selection {
-  background: #e6deb8;
-  color: var(--text-main);
+  background-color: #e6deb8 !important;
+  color: #121312 !important;
 }
 
 ::-moz-selection {
-  background: #e6deb8;
-  color: var(--text-main);
+  background-color: #e6deb8 !important;
+  color: #121312 !important;
+}
+
+*::selection {
+  background-color: #e6deb8 !important;
+  color: #121312 !important;
+}
+
+*::-moz-selection {
+  background-color: #e6deb8 !important;
+  color: #121312 !important;
+}
+
+input::selection,
+textarea::selection {
+  background-color: #e6deb8 !important;
+  color: #121312 !important;
 }
 
 body {
