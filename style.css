@@ -43,6 +43,17 @@ html {
   box-sizing: border-box;
 }
 
+/* Custom Text Selection Highlight */
+::selection {
+  background: #e6deb8;
+  color: var(--text-main);
+}
+
+::-moz-selection {
+  background: #e6deb8;
+  color: var(--text-main);
+}
+
 body {
   font-family: var(--font);
   background-color: var(--bg-main);
