@@ -7,8 +7,6 @@ const DEFAULT_GOOGLE_CLIENT_ID = "612458364858-v51iq3877g7tkgdshfk4ksjf83kf9dls.
 let currentMode = 'signin'; // 'signin' | 'signup'
 
 // DOM Elements
-const tabSignIn = document.getElementById('tabSignIn');
-const tabSignUp = document.getElementById('tabSignUp');
 const authTitle = document.getElementById('authTitle');
 const authSubtitle = document.getElementById('authSubtitle');
 const nameGroup = document.getElementById('nameGroup');
@@ -19,7 +17,7 @@ const togglePassBtn = document.getElementById('togglePassBtn');
 const authForm = document.getElementById('authForm');
 const authSubmitBtn = document.getElementById('authSubmitBtn');
 const submitBtnText = document.getElementById('submitBtnText');
-const switchPromptText = document.getElementById('switchPromptText');
+const switchPrompt = document.getElementById('switchPrompt');
 const switchModeBtn = document.getElementById('switchModeBtn');
 const authAlert = document.getElementById('authAlert');
 const googleCustomBtn = document.getElementById('googleCustomBtn');
@@ -34,32 +32,22 @@ function setMode(mode) {
   hideAlert();
 
   if (mode === 'signup') {
-    tabSignUp.classList.add('active');
-    tabSignUp.setAttribute('aria-selected', 'true');
-    tabSignIn.classList.remove('active');
-    tabSignIn.setAttribute('aria-selected', 'false');
-
-    authTitle.textContent = 'Create your account';
-    authSubtitle.textContent = 'Login to save your progress';
-    nameGroup.style.display = 'block';
-    submitBtnText.textContent = 'Create Account';
-    googleBtnLabel.textContent = 'Sign up with Google';
-    switchPromptText.textContent = 'Already have an account?';
-    switchModeBtn.textContent = 'Sign in instead';
+    if (authTitle) authTitle.textContent = 'Create your account';
+    if (authSubtitle) authSubtitle.textContent = 'Login to save your progress';
+    if (nameGroup) nameGroup.style.display = 'block';
+    if (submitBtnText) submitBtnText.textContent = 'Create account';
+    if (googleBtnLabel) googleBtnLabel.textContent = 'Sign up with Google';
+    if (switchPrompt) switchPrompt.textContent = 'Already have an account?';
+    if (switchModeBtn) switchModeBtn.textContent = 'Sign in →';
     if (fullNameInput) fullNameInput.required = true;
   } else {
-    tabSignIn.classList.add('active');
-    tabSignIn.setAttribute('aria-selected', 'true');
-    tabSignUp.classList.remove('active');
-    tabSignUp.setAttribute('aria-selected', 'false');
-
-    authTitle.textContent = 'Welcome back';
-    authSubtitle.textContent = 'Login to save your progress';
-    nameGroup.style.display = 'none';
-    submitBtnText.textContent = 'Sign In';
-    googleBtnLabel.textContent = 'Continue with Google';
-    switchPromptText.textContent = "Don't have an account?";
-    switchModeBtn.textContent = 'Create one now';
+    if (authTitle) authTitle.textContent = 'Welcome back';
+    if (authSubtitle) authSubtitle.textContent = 'Login to save your progress';
+    if (nameGroup) nameGroup.style.display = 'none';
+    if (submitBtnText) submitBtnText.textContent = 'Sign in';
+    if (googleBtnLabel) googleBtnLabel.textContent = 'Continue with Google';
+    if (switchPrompt) switchPrompt.textContent = "Don't have an account?";
+    if (switchModeBtn) switchModeBtn.textContent = 'Sign up →';
     if (fullNameInput) fullNameInput.required = false;
   }
 
@@ -67,16 +55,20 @@ function setMode(mode) {
   initGoogleSignIn();
 }
 
-if (tabSignIn && tabSignUp) {
-  tabSignIn.addEventListener('click', () => setMode('signin'));
-  tabSignUp.addEventListener('click', () => setMode('signup'));
-}
-
 if (switchModeBtn) {
-  switchModeBtn.addEventListener('click', () => {
+  switchModeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
     setMode(currentMode === 'signin' ? 'signup' : 'signin');
   });
 }
+
+// Auto-detect mode from URL query parameter (e.g. auth.html?mode=signup)
+try {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'signup') {
+    setMode('signup');
+  }
+} catch (e) {}
 
 // ==========================================
 // Password Visibility Toggle

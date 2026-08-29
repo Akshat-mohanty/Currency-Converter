@@ -7,7 +7,7 @@
   <title>Santerra - All-in-One Financial Suite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -17,9 +17,9 @@
     <a href="index.html" class="logo-link">
       <div class="logo">
         <svg class="logo-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <rect x="2" y="2" width="6" height="6" rx="2" fill="#111111"/>
-          <rect x="10" y="2" width="6" height="6" rx="2" fill="#111111"/>
-          <rect x="2" y="10" width="6" height="6" rx="2" fill="#111111"/>
+          <rect x="2" y="2" width="6" height="6" rx="2" fill="#1B4332"/>
+          <rect x="10" y="2" width="6" height="6" rx="2" fill="#1B4332"/>
+          <rect x="2" y="10" width="6" height="6" rx="2" fill="#1B4332"/>
         </svg>
         <span class="brand-title">Santerra</span>
       </div>
@@ -27,22 +27,86 @@
 
     <!-- User Auth Area (Dynamically Managed by app.js) -->
     <div class="header-auth" id="headerAuth">
-      <a href="auth.html" class="header-signin-btn" id="headerSignInBtn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-          <circle cx="12" cy="7" r="4"></circle>
-        </svg>
-        <span>Sign In</span>
-      </a>
+      <a href="auth.html" class="header-login-btn" id="headerSignInBtn">Log in</a>
+      <a href="auth.html?mode=signup" class="header-signup-btn">Get started</a>
     </div>
   </header>
 
   <main class="main-content">
     
-    <!-- Hero Landing Section (All-in-One Description) -->
+    <!-- Hero Landing Section (Editorial Style with Live Preview Cards) -->
     <section class="landing-hero">
-      <h1 class="hero-title">Your all-in-one financial toolkit.</h1>
-      <p class="hero-subtitle">Instant currency conversion, loan breakdowns, installment schedules, and investment compounding — all in one clean workspace.</p>
+      <div class="hero-pill-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span>All-in-one financial intelligence &middot; Free forever</span>
+      </div>
+
+      <h1 class="hero-title">Your universal suite for financial clarity.</h1>
+      <p class="hero-subtitle">Convert currencies with live institutional rates, calculate loans and installments, and model compound investment wealth — all in one clean workspace.</p>
+
+      <div class="hero-actions-row">
+        <a href="#workspace" class="hero-primary-cta">Start calculating &rarr;</a>
+        <a href="#how-it-works" class="hero-secondary-cta">See how it works</a>
+      </div>
+
+      <!-- Live Preview Cards Grid (Inspired by Wishlist Live Cards) -->
+      <div class="hero-previews-grid">
+        <div class="preview-card">
+          <div class="preview-card-header">
+            <div class="preview-card-brand">
+              <span class="preview-brand-icon">$</span>
+              <span class="preview-brand-name">Currency</span>
+            </div>
+            <span class="preview-badge-pill">Live Rates</span>
+          </div>
+          <div>
+            <p class="preview-metric-title">1.00 USD &rarr; 0.92 EUR</p>
+            <p class="preview-metric-desc">&ldquo;160+ live world currencies&rdquo;</p>
+          </div>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-card-header">
+            <div class="preview-card-brand">
+              <span class="preview-brand-icon">%</span>
+              <span class="preview-brand-name">Loan</span>
+            </div>
+            <span class="preview-badge-pill">7.5% APR</span>
+          </div>
+          <div>
+            <p class="preview-metric-title">$482.20 / mo</p>
+            <p class="preview-metric-desc">&ldquo;Principal &amp; interest breakdown&rdquo;</p>
+          </div>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-card-header">
+            <div class="preview-card-brand">
+              <span class="preview-brand-icon">#</span>
+              <span class="preview-brand-name">Installments</span>
+            </div>
+            <span class="preview-badge-pill">Flexible</span>
+          </div>
+          <div>
+            <p class="preview-metric-title">12 Monthly Plans</p>
+            <p class="preview-metric-desc">&ldquo;Zero-cost or interest schedule&rdquo;</p>
+          </div>
+        </div>
+
+        <div class="preview-card">
+          <div class="preview-card-header">
+            <div class="preview-card-brand">
+              <span class="preview-brand-icon">&uarr;</span>
+              <span class="preview-brand-name">Investment</span>
+            </div>
+            <span class="preview-badge-pill">8.0% Return</span>
+          </div>
+          <div>
+            <p class="preview-metric-title">+$48,930 Wealth</p>
+            <p class="preview-metric-desc">&ldquo;Compound growth projections&rdquo;</p>
+          </div>
+        </div>
+      </div>
 
       <!-- Segmented Navigation Menu -->
       <nav class="tools-nav" aria-label="Financial tools navigation">
@@ -392,13 +456,81 @@
 
     </section>
 
+    <!-- How It Works Section (Inspired by Wishlist 3-Step Section) -->
+    <section id="how-it-works" class="how-it-works-section">
+      <div class="section-header-center">
+        <span class="section-tag">How It Works</span>
+        <h2 class="section-title">Three steps to financial clarity</h2>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-number">01</span>
+          <div class="step-icon-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="3" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="3" width="7" height="7" rx="1.5"></rect><rect x="14" y="14" width="7" height="7" rx="1.5"></rect><rect x="3" y="14" width="7" height="7" rx="1.5"></rect></svg>
+          </div>
+          <h3 class="step-title">Choose your tool</h3>
+          <p class="step-desc">Switch seamlessly between Currency, Loan, Installments, and Investment compounding with tactile zero-latency controls.</p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-number">02</span>
+          <div class="step-icon-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+          <h3 class="step-title">Tune parameters</h3>
+          <p class="step-desc">Adjust loan amounts, interest rates, tenures, and monthly investments in real-time with responsive sliders and interactive chips.</p>
+        </div>
+
+        <div class="step-card">
+          <span class="step-number">03</span>
+          <div class="step-icon-wrapper">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          </div>
+          <h3 class="step-title">Export &amp; save plans</h3>
+          <p class="step-desc">One-click copy formatted calculation summaries, or log in with Google to save your preferences and calculation history.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom CTA Banner (Inspired by Wishlist CTA Banner) -->
+    <section class="cta-banner-section">
+      <div class="cta-banner-card">
+        <div class="cta-banner-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          <span>Free forever &middot; No credit card needed</span>
+        </div>
+        <h2 class="cta-banner-title">Ready to take control of your numbers?</h2>
+        <p class="cta-banner-subtitle">Build personal financial plans, track exchange rates, and model your wealth effortlessly with zero clutter.</p>
+        <a href="auth.html?mode=signup" class="cta-banner-btn">
+          <span>Get started for free</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </section>
+
   </main>
 
-  <!-- Pinned Bottom Footer with Found a Bug? -->
-  <footer class="copyright-footer">
-    <span>© 2026 Akshat Mohanty. Built with ❤️</span>
-    <span class="footer-separator">&middot;</span>
-    <a href="https://github.com/Akshat-mohanty/Currency-Converter/issues" target="_blank" rel="noopener noreferrer" class="bug-link">Found a Bug?</a>
+  <!-- Comprehensive Footer with Privacy & Terms Links -->
+  <footer class="app-footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <a href="index.html" class="footer-brand-title">Santerra</a>
+          <p class="footer-tagline">Precision in every calculation.</p>
+        </div>
+        <div class="footer-nav-links">
+          <a href="privacy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms of Service</a>
+          <a href="auth.html" class="footer-link">Log in</a>
+          <a href="auth.html?mode=signup" class="footer-link">Sign up</a>
+          <a href="https://github.com/Akshat-mohanty/Currency-Converter/issues" target="_blank" rel="noopener noreferrer" class="footer-link">Found a Bug?</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2026 Akshat Mohanty. Built with ❤️</p>
+      </div>
+    </div>
   </footer>
 
   <script src="app.js"></script>
